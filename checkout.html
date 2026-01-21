@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Fish Hub</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .checkout-container {
+            max-width: 1000px;
+            margin: 100px auto 0;
+            padding: 2rem 5%;
+            min-height: 70vh;
+        }
+
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 1rem;
+        }
+
+        .checkout-header h1 {
+            color: var(--ocean-blue);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .checkout-form {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            color: var(--ocean-blue);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 1px solid rgba(44,62,80,0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--ocean-blue);
+            box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
+        }
+
+        .payment-methods {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--light-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            border-color: var(--ocean-blue);
+            background: rgba(0, 119, 190, 0.05);
+        }
+
+        .payment-option input[type="radio"] {
+            margin-right: 1rem;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .payment-option.selected {
+            border-color: var(--ocean-blue);
+            background: var(--light-blue);
+        }
+
+        .payment-option-content {
+            flex: 1;
+        }
+
+        .payment-option-content h3 {
+            margin: 0 0 0.25rem 0;
+            color: var(--ocean-blue);
+        }
+
+        .payment-option-content p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .order-summary {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .summary-title {
+            color: var(--ocean-blue);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--ocean-blue);
+            padding-bottom: 1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .summary-item .icon {
+            margin-right: 0.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .summary-row.total {
+            border-top: 2px solid var(--ocean-blue);
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--ocean-blue);
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--seafoam) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .place-order-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 119, 190, 0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--ocean-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--seafoam);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Fish Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#products">Products</a></li>
+                <li><a href="cart.html">🛒 Cart</a></li>
+                <li><a href="#" id="logoutLink">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <a href="cart.html" class="back-link">← Back to Cart</a>
+
+        <div class="checkout-header">
+            <h1>Checkout</h1>
+        </div>
+
+        <div class="checkout-content">
+            <form id="checkoutForm" class="checkout-form">
+                <!-- Delivery Information -->
+                <div class="form-section">
+                    <h2>📍 Delivery Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+233..." required>
+                        </div>
+                    </div>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="address">Delivery Address *</label>
+                            <input type="text" id="address" name="address" placeholder="Street address, city, region" required>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </form>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-title">Order Summary</div>
+                <div id="orderItems"></div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₵0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span>₵5.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">₵5.00</span>
+                </div>
+                <button id="proceedBtn" class="place-order-btn" type="button">Proceed to checkout</button>
+                <div id="checkoutSteps" style="display:none; margin-top:1rem;">
+                    <div style="margin-bottom: 1rem; font-weight: 600; color: var(--ocean-blue);">Select Payment Method</div>
+                    <div class="payment-methods">
+                        <label class="payment-option selected">
+                            <input type="radio" name="paymentMethod" value="momo" checked>
+                            <span class="payment-icon">📱</span>
+                            <div class="payment-option-content">
+                                <h3>Mobile Money (MoMo)</h3>
+                                <p>MTN, Telecel, AirtelTigo</p>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="visa">
+                            <span class="payment-icon">💳</span>
+                            <div class="payment-option-content">
+                                <h3>Card (Visa/Mastercard)</h3>
+                                <p>Use your ATM/Bank card</p>
+                            </div>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="bank">
+                            <span class="payment-icon">🏦</span>
+                            <div class="payment-option-content">
+                                <h3>Bank Account Transfer</h3>
+                                <p>Pay via direct bank transfer</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div id="paymentDetails" style="margin-top: 1rem; padding: 1rem; background: rgba(61, 179, 158, 0.1); border-radius: 8px; display: none;">
+                        <div id="momoDetails" style="display: none;">
+                            <h3 style="margin-top: 0; color: var(--ocean-blue);">Mobile Money Account</h3>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-dark); font-weight: 500;">Service Provider *</label>
+                                <select id="momoProvider" style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;">
+                                    <option value="">Select Service Provider</option>
+                                    <option value="mtn">📱 MTN Mobile Money</option>
+                                    <option value="telecel">📱 Telecel Cash</option>
+                                    <option value="airteltigo">📱 AirtelTigo Money</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-dark); font-weight: 500;">Mobile Number *</label>
+                                <input type="tel" id="momoNumber" placeholder="0XX XXX XXXX" style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;" required>
+                                <small style="color: var(--text-light);">Enter your mobile money account number</small>
+                            </div>
+                            <div style="padding: 1rem; background: #fff3cd; border-radius: 4px; margin-bottom: 1rem;">
+                                <p style="margin: 0; color: #856404; font-size: 0.9rem;">📌 A payment prompt will be sent to this number. Please complete the payment on your phone.</p>
+                            </div>
+                        </div>
+                        <div id="cardDetails" style="display: none;">
+                            <h3 style="margin-top: 0; color: var(--ocean-blue);">Card Payment</h3>
+                            <p style="margin: 0; color: var(--text-dark); font-size: 0.9rem;" id="paymentInfo">You will be redirected to a secure payment gateway. Visa/Mastercard accepted.</p>
+                        </div>
+                        <div id="bankDetails" style="display: none;">
+                            <h3 style="margin-top: 0; color: var(--ocean-blue);">Bank Transfer</h3>
+                            <p style="margin: 0; color: var(--text-dark); font-size: 0.9rem;" id="paymentInfo">Bank Account: Fish Hub Ltd | Account Number: 1234567890 | Bank: GCB Bank | Reference: Order details will be sent to your email</p>
+                        </div>
+                    </div>
+                    <button id="completeOrderBtn" type="submit" form="checkoutForm" class="place-order-btn" style="margin-top:1rem;">Complete Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DELIVERY_FEE = 5;
+
+        function checkLogin() {
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function getCart() {
+            // Prefer per-user cart if present (used by CartManager)
+            try {
+                const userCartKey = Object.keys(localStorage).find(k => k.startsWith('cart_'));
+                if (userCartKey) {
+                    const userCart = JSON.parse(localStorage.getItem(userCartKey)) || { items: [], total: 0 };
+                    return Array.isArray(userCart.items) ? userCart.items : [];
+                }
+            } catch (_) {}
+            // Fallback to simple cart array
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        }
+
+        function renderOrderSummary() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            const orderItemsDiv = document.getElementById('orderItems');
+            let subtotal = 0;
+
+            orderItemsDiv.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                return `
+                    <div class="summary-item">
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>₵${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            const total = subtotal + DELIVERY_FEE;
+            document.getElementById('subtotal').textContent = `₵${subtotal.toFixed(2)}`;
+            document.getElementById('total').textContent = `₵${total.toFixed(2)}`;
+        }
+
+        // Payment method selection
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+                this.closest('.payment-option').classList.add('selected');
+
+                const paymentDetails = document.getElementById('paymentDetails');
+                const momoDetails = document.getElementById('momoDetails');
+                const cardDetails = document.getElementById('cardDetails');
+                const bankDetails = document.getElementById('bankDetails');
+
+                // Hide all payment detail sections
+                momoDetails.style.display = 'none';
+                cardDetails.style.display = 'none';
+                bankDetails.style.display = 'none';
+
+                if (this.value === 'momo') {
+                    momoDetails.style.display = 'block';
+                    paymentDetails.style.display = 'block';
+                } else if (this.value === 'visa') {
+                    cardDetails.style.display = 'block';
+                    paymentDetails.style.display = 'block';
+                } else if (this.value === 'bank') {
+                    bankDetails.style.display = 'block';
+                    paymentDetails.style.display = 'block';
+                }
+            });
+        });
+
+        // Trigger initial payment info
+        document.querySelector('input[name="paymentMethod"]:checked') && document.querySelector('input[name="paymentMethod"]:checked').dispatchEvent(new Event('change'));
+        // Proceed to Checkout gating
+        (function() {
+            const btn = document.getElementById('proceedBtn');
+            if (!btn) return;
+            btn.addEventListener('click', function() {
+                const steps = document.getElementById('checkoutSteps');
+                if (!steps) return;
+                steps.style.display = 'block';
+                const checked = document.querySelector('input[name="paymentMethod"]:checked');
+                if (checked) checked.dispatchEvent(new Event('change'));
+                this.style.display = 'none';
+                steps.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        })();
+
+        // Form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const cart = getCart();
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + DELIVERY_FEE;
+
+            // Validate mobile money fields
+            if (paymentMethod === 'momo') {
+                const provider = document.getElementById('momoProvider').value;
+                const momoNumber = document.getElementById('momoNumber').value;
+
+                if (!provider) {
+                    alert('❌ Please select a service provider');
+                    return;
+                }
+
+                if (!momoNumber) {
+                    alert('❌ Please enter your mobile money number');
+                    return;
+                }
+
+                if (momoNumber.length < 10) {
+                    alert('❌ Please enter a valid mobile number');
+                    return;
+                }
+
+                // Get provider name
+                const providerName = {
+                    'mtn': 'MTN Mobile Money',
+                    'telecel': 'Telecel Cash',
+                    'airteltigo': 'AirtelTigo Money'
+                }[provider];
+
+                // Create order with MOMO details
+                const orderDetails = `
+ORDER CONFIRMATION
+==================
+Name: ${fullName}
+Phone: ${phone}
+Delivery Address: ${address}
+Payment Method: ${providerName}
+Mobile Money Number: ${momoNumber}
+
+ORDER ITEMS:
+${cart.map(item => `- ${item.name} (${item.type}) x${item.quantity}: ₵${(item.price * item.quantity).toFixed(2)}`).join('\n')}
+
+SUBTOTAL: ₵${subtotal.toFixed(2)}
+Delivery Fee: ₵${DELIVERY_FEE.toFixed(2)}
+FINAL TOTAL: ₵${total.toFixed(2)}
+
+PAYMENT INSTRUCTION:
+A payment prompt will be sent to ${momoNumber}.
+Please respond with your MOMO PIN to complete payment.
+
+Thank you for your order!
+Our delivery team will contact you shortly.
+                `;
+
+                // Send MOMO payment initiation
+                console.log('📱 Initiating MOMO payment...');
+                console.log('Provider:', providerName);
+                console.log('Number:', momoNumber);
+                console.log('Amount:', total.toFixed(2));
+
+                showMOMOPaymentPrompt(momoNumber, providerName, total, orderDetails);
+            } else {
+                // Non-MOMO payment flow
+                const orderDetails = `
+ORDER CONFIRMATION
+==================
+Name: ${fullName}
+Phone: ${phone}
+Delivery Address: ${address}
+Payment Method: ${paymentMethod.toUpperCase()}
+
+ORDER ITEMS:
+${cart.map(item => `- ${item.name} (${item.type}) x${item.quantity}: ₵${(item.price * item.quantity).toFixed(2)}`).join('\n')}
+
+TOTAL: ₵${subtotal.toFixed(2)}
+Delivery Fee: ₵${DELIVERY_FEE.toFixed(2)}
+FINAL TOTAL: ₵${total.toFixed(2)}
+
+Thank you for your order!
+Our delivery team will contact you shortly.
+                `;
+
+                showSuccessNotification();
+
+                setTimeout(() => {
+                    localStorage.removeItem('cart');
+                    sessionStorage.setItem('lastOrder', orderDetails);
+                    window.location.href = 'index.html';
+                }, 3000);
+            }
+        });
+
+        function showMOMOPaymentPrompt(momoNumber, providerName, amount, orderDetails) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="notification-content" style="text-align: center;">
+                    <h3>📱 Payment Request Sent! ✅</h3>
+                    <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
+                        <p style="margin: 0.5rem 0; color: #856404; font-weight: bold;">Service: ${providerName}</p>
+                        <p style="margin: 0.5rem 0; color: #856404; font-weight: bold;">Number: ${momoNumber}</p>
+                        <p style="margin: 0.5rem 0; color: #856404; font-weight: bold; font-size: 1.2rem;">Amount: ₵${amount.toFixed(2)}</p>
+                    </div>
+                    <p style="color: var(--text-dark); margin: 1rem 0;">A payment prompt has been sent to your phone.</p>
+                    <p style="color: var(--text-dark); margin: 1rem 0;">✔️ Check your phone and enter your MOMO PIN to complete payment</p>
+                    <p style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.8; color: var(--text-light);">Redirecting after confirmation...</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+
+            // Simulate payment confirmation after delay
+            setTimeout(() => {
+                localStorage.removeItem('cart');
+                sessionStorage.setItem('lastOrder', orderDetails);
+                window.location.href = 'index.html';
+            }, 5000);
+        }
+
+        function showSuccessNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <h3>Order Placed Successfully! ✅</h3>
+                    <p>Thank you for shopping at Fish Hub!</p>
+                    <p>Our delivery team will contact you shortly to confirm the details.</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">Redirecting you home...</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+        }
+
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('userEmail');
+            localStorage.removeItem('cart');
+            window.location.href = 'login.html';
+        });
+
+        renderOrderSummary();
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "seller-001",
+    "userId": "cf98d49a-58bf-4673-823a-628d8609ebce",
+    "shopName": "Pius's Shop",
+    "description": "",
+    "phone": "0540851637",
+    "address": "",
+    "rating": 0,
+    "totalReviews": 0,
+    "totalSales": 0,
+    "totalEarnings": 0,
+    "createdAt": "2026-01-19T17:21:34.860Z",
+    "status": "active",
+    "verified": false
+  },
+  {
+    "id": "seller-002",
+    "userId": "4edc2ee8-eebe-446a-b6c4-a17be140584f",
+    "shopName": "kwabena's Shop",
+    "description": "",
+    "phone": "0540851637",
+    "address": "",
+    "rating": 0,
+    "totalReviews": 0,
+    "totalSales": 0,
+    "totalEarnings": 0,
+    "createdAt": "2026-01-19T17:29:49.593Z",
+    "status": "active",
+    "verified": false
+  },
+  {
+    "id": "seller-003",
+    "userId": "ecd9c9be-e6e0-40cd-8f84-cba7481e0a0e",
+    "shopName": "ohene's Shop",
+    "description": "",
+    "phone": "0540851637",
+    "address": "",
+    "rating": 0,
+    "totalReviews": 0,
+    "totalSales": 0,
+    "totalEarnings": 0,
+    "createdAt": "2026-01-19T17:31:37.540Z",
+    "status": "active",
+    "verified": false
+  },
+  {
+    "id": "a0951ce6-ccdd-4a19-a42b-a3021def5dac",
+    "userId": "5b76974a-3086-473c-bfa6-d79d852d2151",
+    "shopName": "Pius Darko's Shop",
+    "description": "",
+    "phone": "0540851637",
+    "address": "",
+    "rating": 0,
+    "totalReviews": 0,
+    "totalSales": 0,
+    "totalEarnings": 0,
+    "createdAt": "2026-01-19T17:45:33.285Z",
+    "status": "active",
+    "verified": false
+  }
+]

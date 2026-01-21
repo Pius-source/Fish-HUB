@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Hub - Fresh Sustainable Seafood on Campus</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Fish Hub</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="cart.html" style="position: relative;">🛒 Cart <span id="cartCount" style="position: absolute; top: -8px; right: -8px; background: var(--coral); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">0</span></a></li>
+                <li><a href="seller-dashboard.html" id="sellerLink" style="display: none;">📊 Seller Dashboard</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Fresh, Sustainable Seafood on Campus</h1>
+            <p>Nourishing health-conscious students and faculty with premium, omega-3 rich fish while promoting sustainable fishing practices</p>
+            <a href="#contact" class="cta-button">Get Started Today</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2 class="section-title">Why Choose Fish Hub?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🐠</div>
+                <h3>Fresh & Quality</h3>
+                <p>Sourced daily from responsible fisheries, ensuring the highest quality and freshness for our campus community</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌊</div>
+                <h3>Sustainable Sourcing</h3>
+                <p>Partnering with local suppliers practicing responsible fishing methods to protect our oceans</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💪</div>
+                <h3>Health & Nutrition</h3>
+                <p>Rich in omega-3 fatty acids and protein, perfect for maintaining a healthy lifestyle</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚚</div>
+                <h3>Convenient Delivery</h3>
+                <p>Both physical storefront and online platform for maximum accessibility</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Educational Resources</h3>
+                <p>Workshops and cooking demonstrations to help you make the most of your seafood</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Community Hub</h3>
+                <p>Building a community of seafood lovers who value quality and sustainability</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">About Fish Hub</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Our Story</h2>
+                <p>Fish Hub is a vibrant seafood marketplace designed to meet the growing demand for nutritious food among health-conscious students and faculty. We offer a diverse selection of fresh fish and seafood products sourced from responsible fisheries and sustainable aquaculture.</p>
+                <p>With both a physical storefront and an online platform, we cater to local restaurants, grocery stores, and individual consumers, creating a community hub that emphasizes quality and sustainability.</p>
+                <p>Beyond selling fish, Fish Hub serves as an educational platform, hosting workshops and cooking demonstrations to raise awareness about the health benefits of seafood and sustainable consumption.</p>
+            </div>
+            <div>
+                <div class="mission-vision">
+                    <h3>🎯 Our Vision</h3>
+                    <p>To provide the school community with fresh, high-quality seafood while promoting the health benefits of fish consumption and supporting sustainable fishing practices.</p>
+                </div>
+                <div class="mission-vision" style="margin-top: 1.5rem;">
+                    <h3>🚀 Our Mission</h3>
+                    <p>To deliver sustainably sourced seafood while promoting healthy eating, fostering community engagement, and ensuring customer satisfaction through exceptional service and quality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="search-filter" style="background: var(--light-blue); padding: 2rem 5%; text-align: center;">
+        <input type="text" id="searchInput" placeholder="Search products..." style="padding: 0.8rem; width: 100%; max-width: 400px; border: 1px solid var(--ocean-blue); border-radius: 8px; font-size: 1rem; margin-right: 1rem;">
+        <select id="categoryFilter" style="padding: 0.8rem; border: 1px solid var(--ocean-blue); border-radius: 8px; font-size: 1rem; margin-right: 1rem;">
+            <option value="">All Categories</option>
+        </select>
+        <select id="sortFilter" style="padding: 0.8rem; border: 1px solid var(--ocean-blue); border-radius: 8px; font-size: 1rem;">
+            <option value="">Sort By</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="newest">Newest</option>
+            <option value="popular">Most Popular</option>
+        </select>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <h2 class="section-title">Our Products & Services</h2>
+        <div class="products-grid" id="productsGrid">
+            <div class="product-card">
+                <div class="product-image">🐟</div>
+                <div class="product-info">
+                    <h3>Fresh Fish</h3>
+                    <p class="price">₵65.00 per kg</p>
+                    <p>Daily selection of premium fish varieties, carefully sourced from sustainable fisheries</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Fresh Fish', '🐟', 65.00, 'Salmon')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🦐</div>
+                <div class="product-info">
+                    <h3>Seafood Selection</h3>
+                    <p class="price">₵85.00 per kg</p>
+                    <p>Wide variety of shellfish and other seafood, all meeting our quality standards</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Seafood Selection', '🦐', 85.00, 'Shrimp')">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🍱</div>
+                <div class="product-info">
+                    <h3>Pre-packaged Meals</h3>
+                    <p class="price">₵48.00 per meal</p>
+                    <p>Convenient, ready-to-cook meal kits for busy students and faculty</p>
+                    <form class="order-form" data-product="Pre-packaged Meals">
+                        <input type="hidden" name="product" value="Pre-packaged Meals">
+                        <select name="fishType" required>
+                            <option value="">Select meal/fish type</option>
+                            <option>Salmon Bento</option>
+                            <option>Tuna Salad</option>
+                            <option>Mixed Seafood</option>
+                            <option>Vegetarian option</option>
+                            <option>Custom / Other</option>
+                        </select>
+                        <input type="number" name="quantity" min="1" placeholder="Quantity (meals)" required>
+                        <input type="text" name="location" placeholder="Pickup/Delivery location" required>
+                        <button type="submit">Send Order</button>
+                    <button class="add-to-cart-btn" onclick="addToCart('Pre-packaged Meals', '🍱', 48.00, 'Salmon Bento')">Add to Cart</button  <option value="">Select focus (fish/seafood)</option>
+                            <option>Basic Fish Prep</option>
+                            <option>Shellfish Techniques</option>
+                            <option>Sushi & Sashimi</option>
+                            <option>Meal Planning</option>
+                            <option>Custom / Other</option>
+                        </select>
+                        <input type="number" name="quantity" min="1" placeholder="Number of attendees" required>
+                        <input type="text" name="location" placeholder="Preferred location or campus building" required>
+                        <button type="submit">Request Class</button>
+                    <button class="add-to-cart-btn" onclick="addToCart('Cooking Classes', '👨‍🍳', 135.00, 'Basic Fish Prep')">Add to Cart</buttonstainability Commitment</h3>
+                    <p>Every purchase supports responsible fishing practices and ocean conservation</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">❤️</div>
+                <div>
+                    <h3>Health & Wellness</h3>
+                    <p>Nutrient-rich seafood supporting your physical and mental well-being</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">⚡</div>
+                <div>
+                    <h3>Maximum Convenience</h3>
+                    <p>Strategic campus location with online ordering and delivery options</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">🌟</div>
+                <div>
+                    <h3>Culinary Inspiration</h3>
+                    <p>Expert guidance and recipes to elevate your cooking skills</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Ready to Experience Fresh Seafood?</h2>
+        <p>Join our community of health-conscious seafood lovers</p>
+        <a href="#" class="cta-button">Order Now</a>
+        <div class="contact-info">
+            <div class="contact-item">
+                <span>📧</span>
+                <span>fishhub.edu.ucc.gh@gmail.com</span>
+            </div>
+            <div class="contact-item">
+                <span>📱</span>
+                <span>Follow us on social media</span>
+            </div>
+            <div class="contact-item">
+                <span>📍</span>
+                <span>Campus Location - Coming Soon</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Fish Hub. All rights reserved. Committed to sustainable seafood and healthy communities.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Trademark, Copyright, and Trade Secrets Protected</p>
+    </footer>
+
+    <script src="js/api-client.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Update navbar
+            updateNavbar();
+
+            // Load categories and products
+            await loadCategories();
+            await loadProducts();
+
+            // Setup event listeners
+            document.getElementById('searchInput').addEventListener('input', debounce(loadProducts, 300));
+            document.getElementById('categoryFilter').addEventListener('change', loadProducts);
+            document.getElementById('sortFilter').addEventListener('change', loadProducts);
+
+            // Update cart count
+            updateCartBadge();
+        });
+
+        function updateNavbar() {
+            const loginLink = document.getElementById('loginLink');
+            const logoutLink = document.getElementById('logoutLink');
+            const sellerLink = document.getElementById('sellerLink');
+
+            if (auth.isLoggedIn()) {
+                loginLink.style.display = 'none';
+                logoutLink.style.display = 'inline';
+                const user = auth.getUser();
+                logoutLink.innerHTML = `${user.name} (Logout)`;
+                
+                // Show seller dashboard for sellers
+                if (user.role === 'seller') {
+                    sellerLink.style.display = 'inline';
+                } else {
+                    sellerLink.style.display = 'none';
+                }
+            } else {
+                loginLink.style.display = 'inline';
+                logoutLink.style.display = 'none';
+                sellerLink.style.display = 'none';
+            }
+        }
+
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.logout();
+            cartManager = null;
+            document.getElementById('cartCount').textContent = '0';
+            updateNavbar();
+            location.reload();
+        });
+
+        async function loadCategories() {
+            const categories = await productManager.getCategories();
+            const categorySelect = document.getElementById('categoryFilter');
+            
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.name;
+                option.textContent = `${cat.icon} ${cat.name}`;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        async function loadProducts() {
+            const filters = {
+                search: document.getElementById('searchInput').value,
+                category: document.getElementById('categoryFilter').value,
+                sortBy: document.getElementById('sortFilter').value
+            };
+
+            const result = await productManager.getProducts(filters);
+            const grid = document.getElementById('productsGrid');
+
+            if (result.products.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No products found</p>';
+                return;
+            }
+
+            grid.innerHTML = result.products.map(product => `
+                <div class="product-card">
+                    <div class="product-image" style="${product.imageData ? 'background-size: cover; background-position: center; background-image: url(' + product.imageData + ');' : ''}">${!product.imageData ? product.image : ''}</div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="price">₵${product.price.toLocaleString()}</p>
+                        <p style="font-size: 0.85rem; color: var(--text-light);">By ${product.sellerName}</p>
+                        <p>${product.description}</p>
+                        <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                            ${product.rating ? `⭐ ${product.rating} (${product.totalReviews} reviews)` : 'No reviews yet'}
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                <button onclick="decreaseQty('qty-${product.id}')" style="background: #007bff; color: white; border: none; padding: 0.5rem 0.8rem; cursor: pointer; font-size: 1.1rem; border-radius: 4px; font-weight: bold;">−</button>
+                                <input type="text" id="qty-${product.id}" value="1" style="width: 50px; text-align: center; border: 1px solid #ccc; background: #f9f9f9; font-weight: bold; border-radius: 4px; padding: 0.5rem;" readonly>
+                                <button onclick="increaseQty('qty-${product.id}')" style="background: #007bff; color: white; border: none; padding: 0.5rem 0.8rem; cursor: pointer; font-size: 1.1rem; border-radius: 4px; font-weight: bold;">+</button>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCartWithQty('${product.id}', 'qty-${product.id}', '${product.name}', ${product.price}, '${product.image}')" style="width: 100%; padding: 0.8rem; background: linear-gradient(135deg, #0077be 0%, #00a8e8 100%); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem;">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function decreaseQty(inputId) {
+            const input = document.getElementById(inputId);
+            const current = parseInt(input.value);
+            if (current > 1) {
+                input.value = current - 1;
+            }
+        }
+
+        function increaseQty(inputId) {
+            const input = document.getElementById(inputId);
+            const current = parseInt(input.value);
+            input.value = current + 1;
+        }
+
+        function addToCartWithQty(productId, qtyInputId, productName, price, image) {
+            if (!auth.isLoggedIn()) {
+                alert('Please login to add items to cart');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const quantity = parseInt(document.getElementById(qtyInputId).value) || 1;
+            const user = auth.getUser();
+            if (!cartManager) {
+                cartManager = new CartManager(user.id);
+            }
+
+            const product = { id: productId, name: productName, price, image };
+            cartManager.addItem(product, quantity);
+            updateCartBadge();
+            showAddedNotification(`${quantity}x ${productName}`);
+            document.getElementById(qtyInputId).value = 1;
+        }
+
+        function addToCartFromAPI(productId, productName, price, image) {
+            if (!auth.isLoggedIn()) {
+                alert('Please login to add items to cart');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = auth.getUser();
+            if (!cartManager) {
+                cartManager = new CartManager(user.id);
+            }
+
+            const product = { id: productId, name: productName, price, image };
+            cartManager.addItem(product, 1);
+            updateCartBadge();
+            showAddedNotification(productName);
+        }
+
+        function updateCartBadge() {
+            if (auth.isLoggedIn() && cartManager) {
+                document.getElementById('cartCount').textContent = cartManager.getItemCount();
+            } else {
+                document.getElementById('cartCount').textContent = '0';
+            }
+        }
+
+        function showAddedNotification(productName) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--seafoam);
+                color: white;
+                padding: 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 2000;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <h3 style="margin: 0 0 0.5rem 0;">✅ Added to Cart</h3>
+                <p style="margin: 0 0 0.5rem 0;">${productName}</p>
+                <a href="cart.html" style="color: white; text-decoration: underline; font-weight: bold;">View Cart</a>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func(...args), delay);
+            };
+        }
+    </script>
+</body>
+</html>

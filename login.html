@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Hub - Login</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--deep-blue) 100%);
+            padding: 2rem;
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            text-align: center;
+            color: var(--ocean-blue);
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(44,62,80,0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--ocean-blue);
+            box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--ocean-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .login-btn:hover {
+            background: var(--deep-blue);
+            transform: translateY(-2px);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .signup-link a {
+            color: var(--ocean-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .signup-link a:hover {
+            color: var(--seafoam);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section h2 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--ocean-blue);
+        }
+
+        .logo-section p {
+            margin: 0.5rem 0 0 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo-section">
+                <h2>🐟 Fish Hub</h2>
+                <p>Fresh Sustainable Seafood</p>
+            </div>
+            
+            <h1 id="formTitle">Login to Fish Hub</h1>
+            <p id="errorMsg" style="color: var(--coral); display: none; text-align: center; margin-bottom: 1rem;"></p>
+            
+            <form id="loginForm">
+                <div class="form-group" id="nameField" style="display: none;">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-group" id="phoneField" style="display: none;">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone">
+                </div>
+
+                <div class="form-group" id="roleField" style="display: none;">
+                    <label for="role">Account Type</label>
+                    <select id="role" style="width: 100%; padding: 0.8rem; border: 1px solid rgba(44,62,80,0.2); border-radius: 8px;">
+                        <option value="buyer">Buyer</option>
+                        <option value="seller">Seller</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="login-btn" id="submitBtn">Login</button>
+
+                <div class="signup-link" id="toggleText">
+                    Don't have an account? <a href="#" id="toggleLink">Register</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/login-handler.js"></script>
+</body>
+</html>

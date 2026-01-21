@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ebcde286-3fc9-451b-9dd4-adaf82106f92",
+    "email": "darkokwabena571@gmail.com",
+    "password": "$2a$10$hfCBl6Hp/nCXqcE2kS2MHepGpCDOxjMYQL4gPOAt3Z22G2rh2yTsG",
+    "name": "Pius Ohene Darko",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:20:27.506Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "cf98d49a-58bf-4673-823a-628d8609ebce",
+    "email": "darkokwabena12@gmail.com",
+    "password": "$2a$10$KzCsizV7u1XHtn9Vk7jks.IPNf7uyqOdaQnkta4CXfVmhn47beu1C",
+    "name": "Pius",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:21:34.860Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "4edc2ee8-eebe-446a-b6c4-a17be140584f",
+    "email": "kwabena571@gmail.com",
+    "password": "$2a$10$TH5F7Q92ZWNmVf3vo3yB1uzlKKbBDxgILPGtufj.754S72x6HsErS",
+    "name": "kwabena",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:29:49.593Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "ecd9c9be-e6e0-40cd-8f84-cba7481e0a0e",
+    "email": "ohene@gmail.com",
+    "password": "$2a$10$4KUtwnb.6JrVAO42JqEFBOWUrQAAyTHG9umiguAuLOrb.gVDODiwK",
+    "name": "ohene",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:31:37.540Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "5b76974a-3086-473c-bfa6-d79d852d2151",
+    "email": "darkokwabena12@gmail.com",
+    "password": "$2a$10$OmEE0hvEgToiqBr7kghI8u28lLpiGqYBnuOR8jk49C0iLIWC8jRVa",
+    "name": "Pius Darko",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:45:33.282Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "465326f4-60d2-42ea-ac1a-35e1d1a6f9ee",
+    "email": "kwabena@gmail.com",
+    "password": "$2a$10$HLQMECViR2PQ0pQo/hxeB.vQGuVSBquOrtbrtsrcbU52qVE2zmBs6",
+    "name": "KwabenaO",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:47:53.249Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "e1157704-2608-4a38-a343-c1b26dfbca49",
+    "email": "darko@gmail.com",
+    "password": "$2a$10$QPPYnODsADq3.WRSRnL1ZOw.BUZ9vFRnvC08hQqJF.3uH6cJfiNjq",
+    "name": "Darko",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-01-19T17:59:52.032Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "8c7ffa49-ab71-469e-a93d-c0bfcafd4a49",
+    "email": "darkop@gmail.com",
+    "password": "$2a$10$xrjnm5b3H3PTVw2l7v4AjOobS8eQFXPCCy0IlKSXZsdmiYNPMghoy",
+    "name": "darko",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-01-19T18:28:27.811Z",
+    "status": "active",
+    "emailVerified": true
+  }
+]
