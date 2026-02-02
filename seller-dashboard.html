@@ -474,6 +474,13 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer style="background-color: var(--deep-blue); color: white; padding: 2rem 0; text-align: center; margin-top: 4rem;">
+        <p>&copy; 2026 Fish Hub. All rights reserved. Committed to sustainable seafood and healthy communities.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Created by Pius Ohene Darko</p>
+        <p style="margin-top: 0.2rem; font-size: 0.8rem; opacity: 0.6;">Trademark, Copyright, and Trade Secrets Protected</p>
+    </footer>
+
     <script src="js/api-client.js"></script>
     <script>
         // Check if user is logged in and is a seller
@@ -678,11 +685,18 @@
 
                 // Update stats
                 const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
-                const totalSales = products.reduce((sum, p) => sum + (p.totalSold || 0) * p.price, 0);
+                
+                let totalEarnings = 0;
+                if (result.seller && result.seller.totalEarnings !== undefined) {
+                    totalEarnings = result.seller.totalEarnings;
+                } else {
+                    totalEarnings = products.reduce((sum, p) => sum + (p.totalSold || 0) * p.price, 0);
+                }
+                
                 document.getElementById('statsContainer').style.display = 'grid';
                 document.getElementById('totalProducts').textContent = products.length;
                 document.getElementById('totalStock').textContent = totalStock;
-                document.getElementById('totalSales').textContent = '$' + totalSales.toFixed(2);
+                document.getElementById('totalSales').textContent = '₦' + totalEarnings.toLocaleString();
 
             } catch (err) {
                 container.innerHTML = '<p style="color: red;">Error loading products: ' + err.message + '</p>';

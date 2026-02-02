@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../config/database');
 const { generateToken, verifyToken } = require('../middleware/auth');
-const { sendVerificationEmail, sendWelcomeEmail } = require('../config/email');
+const { sendVerificationEmail, sendWelcomeEmail, sendLoginNotificationEmail } = require('../config/email');
 
 const router = express.Router();
 
@@ -49,8 +49,8 @@ router.post('/register', async (req, res) => {
       role: role || 'buyer',
       addresses: [],
       createdAt: new Date().toISOString(),
-      status: 'pending_verification',
-      emailVerified: false
+      status: 'active', // Auto-activate for dev
+      emailVerified: true // Auto-verify for dev to avoid login issues
     };
 
     users.push(newUser);
@@ -265,6 +265,11 @@ router.post('/login', async (req, res) => {
     }
 
     const token = generateToken(user);
+
+    // Send login notification email
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    sendLoginNotificationEmail(user.email, user.name, new Date().toLocaleString(), ip)
+      .catch(err => console.error('Error sending login notification:', err));
 
     res.json({
       message: 'Login successful',

@@ -39,6 +39,7 @@ router.post('/', verifyToken, (req, res) => {
       status: 'pending',
       paymentStatus: 'pending',
       trackingNumber: 'TRACK-' + Math.random().toString(36).substring(2, 10).toUpperCase(),
+      pickupCode: Math.floor(100000 + Math.random() * 900000).toString(), // 6-digit code
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString() // 5 days
@@ -65,6 +66,64 @@ router.post('/', verifyToken, (req, res) => {
       carts[userId].items = [];
       carts[userId].total = 0;
       db.saveCart(carts);
+    }
+
+    // Process Seller Earnings and Notifications
+    const sellers = db.getSellers();
+    const users = db.getUsers();
+    
+    // Calculate earnings per seller
+    const sellerEarnings = {};
+    
+    for (let item of items) {
+      const product = products.find(p => p.id === item.productId);
+      if (product && product.sellerId) {
+        if (!sellerEarnings[product.sellerId]) {
+          sellerEarnings[product.sellerId] = { 
+            amount: 0, 
+            items: [],
+            sellerId: product.sellerId
+          };
+        }
+        sellerEarnings[product.sellerId].amount += product.price * item.quantity;
+        sellerEarnings[product.sellerId].items.push({
+          name: product.name,
+          quantity: item.quantity
+        });
+      }
+    }
+    
+    // Update sellers and send notifications
+    Object.values(sellerEarnings).forEach(earning => {
+      const sellerIndex = sellers.findIndex(s => s.id === earning.sellerId);
+      if (sellerIndex !== -1) {
+        // Apply 10% platform fee deduction
+        const platformFee = earning.amount * 0.10;
+        const netEarnings = earning.amount - platformFee;
+        
+        sellers[sellerIndex].totalEarnings = (sellers[sellerIndex].totalEarnings || 0) + netEarnings;
+        sellers[sellerIndex].totalSales = (sellers[sellerIndex].totalSales || 0) + 1;
+        
+        // Find seller's email
+        const sellerUser = users.find(u => u.id === sellers[sellerIndex].userId);
+        if (sellerUser && sellerUser.email) {
+          sendSellerOrderNotification(
+            sellerUser.email, 
+            sellers[sellerIndex].shopName, 
+            earning.items, 
+            netEarnings
+          ).catch(err => console.error('Error sending seller email:', err));
+        }
+      }
+    });
+    
+    db.saveSellers(sellers);
+    
+    // Send Buyer Confirmation Email
+    const buyer = users.find(u => u.id === userId);
+    if (buyer && buyer.email) {
+      sendOrderConfirmationEmail(buyer.email, newOrder)
+        .catch(err => console.error('Error sending buyer email:', err));
     }
 
     res.status(201).json({

@@ -163,6 +163,38 @@ router.put('/:id', verifySeller, (req, res) => {
   }
 });
 
+// Delete product (Seller only)
+router.delete('/:id', verifySeller, (req, res) => {
+  try {
+    const products = db.getProducts();
+    const productIndex = products.findIndex(p => p.id === req.params.id);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const product = products[productIndex];
+    const sellers = db.getSellers();
+    const seller = sellers.find(s => s.userId === req.user.id);
+
+    if (!seller) {
+      return res.status(404).json({ error: 'Seller profile not found' });
+    }
+
+    // Verify ownership
+    if (product.sellerId !== seller.id) {
+      return res.status(403).json({ error: 'You can only delete your own products' });
+    }
+
+    products.splice(productIndex, 1);
+    db.saveProducts(products);
+
+    res.json({ message: 'Product deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get categories
 router.get('/categories/all', (req, res) => {
   try {

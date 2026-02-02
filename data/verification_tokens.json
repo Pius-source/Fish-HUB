@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "54662938-7e39-456e-921b-c75e088066f7",
+    "email": "victordarko73@gmail.com",
+    "userId": "fa5b43c2-bc79-4f70-9e3b-2bccc99a5a8c",
+    "code": "MSO8VA",
+    "used": false,
+    "createdAt": "2026-01-24T12:28:29.759Z",
+    "expiresAt": "2026-01-25T12:28:29.759Z"
+  },
+  {
+    "id": "e33c2518-1093-4075-b313-afb92ae0b901",
+    "email": "victor73@gmail.com",
+    "userId": "651515cb-869d-4597-9d58-814b1ac100a9",
+    "code": "UM6ROO",
+    "used": false,
+    "createdAt": "2026-01-24T12:46:02.367Z",
+    "expiresAt": "2026-01-25T12:46:02.367Z"
+  },
+  {
+    "id": "1a5a8b02-41dd-4122-88ae-5d0e4246f053",
+    "email": "quaminaprof2002@gmail.com",
+    "userId": "5d3fcf79-e8d5-4fd1-94c5-2f1c748b25b1",
+    "code": "FL98QE",
+    "used": false,
+    "createdAt": "2026-01-24T17:57:31.190Z",
+    "expiresAt": "2026-01-25T17:57:31.190Z"
+  },
+  {
+    "id": "d22a5364-1a33-4620-9bfc-5763342b3875",
+    "email": "piusohened@gmail.com",
+    "userId": "edf949b2-991c-4d5a-ac0a-be150cbab3eb",
+    "code": "0PDZZ4",
+    "used": false,
+    "createdAt": "2026-01-24T18:03:34.945Z",
+    "expiresAt": "2026-01-25T18:03:34.945Z"
+  },
+  {
+    "id": "e5fb7102-e0d1-494e-a633-3413507de587",
+    "email": "kofi@gmail.com",
+    "userId": "a18279da-6f62-4916-8eae-7cb1b44cd181",
+    "code": "9YUI8V",
+    "used": false,
+    "createdAt": "2026-01-24T18:11:05.042Z",
+    "expiresAt": "2026-01-25T18:11:05.042Z"
+  },
+  {
+    "id": "ccf93e4b-1423-4d60-9850-e0c6bc896115",
+    "email": "ohenedarkopius611@gmail.com",
+    "userId": "5ccc78ff-7080-4161-9e76-d8c1360ff0ab",
+    "code": "5RNE1Q",
+    "used": false,
+    "createdAt": "2026-02-02T03:09:15.502Z",
+    "expiresAt": "2026-02-03T03:09:15.502Z"
+  },
+  {
+    "id": "5ca73229-f581-494d-9294-4da1e86095ce",
+    "email": "piusohenedarko@gmail.com",
+    "userId": "c5510c35-2377-498d-90a0-c1cf2afc1b20",
+    "code": "MAPS9G",
+    "used": false,
+    "createdAt": "2026-02-02T03:10:22.552Z",
+    "expiresAt": "2026-02-03T03:10:22.552Z"
+  },
+  {
+    "id": "5c0f3f26-2e2e-431f-9e78-2446da4fdb31",
+    "email": "piusohenedark@gmail.com",
+    "userId": "db14ddc7-0981-47e9-a17b-ac0b9ef5d72d",
+    "code": "PXR5JG",
+    "used": false,
+    "createdAt": "2026-02-02T03:17:58.137Z",
+    "expiresAt": "2026-02-03T03:17:58.137Z"
+  }
+]

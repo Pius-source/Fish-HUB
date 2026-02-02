@@ -242,7 +242,7 @@
         </div>
 
         <div class="checkout-content">
-            <form id="checkoutForm" class="checkout-form">
+            <form id="deliveryForm" class="checkout-form">
                 <!-- Delivery Information -->
                 <div class="form-section">
                     <h2>📍 Delivery Information</h2>
@@ -264,28 +264,9 @@
                     </div>
                 </div>
 
-                
-            </form>
-
-            <!-- Order Summary -->
-            <div class="order-summary">
-                <div class="summary-title">Order Summary</div>
-                <div id="orderItems"></div>
-                <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span id="subtotal">₵0.00</span>
-                </div>
-                <div class="summary-row">
-                    <span>Delivery Fee:</span>
-                    <span>₵5.00</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Total:</span>
-                    <span id="total">₵5.00</span>
-                </div>
-                <button id="proceedBtn" class="place-order-btn" type="button">Proceed to checkout</button>
-                <div id="checkoutSteps" style="display:none; margin-top:1rem;">
-                    <div style="margin-bottom: 1rem; font-weight: 600; color: var(--ocean-blue);">Select Payment Method</div>
+                <!-- Payment Methods -->
+                <div class="form-section">
+                    <h2>💳 Payment Method</h2>
                     <div class="payment-methods">
                         <label class="payment-option selected">
                             <input type="radio" name="paymentMethod" value="momo" checked>
@@ -312,288 +293,102 @@
                             </div>
                         </label>
                     </div>
-                    <div id="paymentDetails" style="margin-top: 1rem; padding: 1rem; background: rgba(61, 179, 158, 0.1); border-radius: 8px; display: none;">
-                        <div id="momoDetails" style="display: none;">
-                            <h3 style="margin-top: 0; color: var(--ocean-blue);">Mobile Money Account</h3>
-                            <div style="margin-bottom: 1rem;">
-                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-dark); font-weight: 500;">Service Provider *</label>
-                                <select id="momoProvider" style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;">
-                                    <option value="">Select Service Provider</option>
-                                    <option value="mtn">📱 MTN Mobile Money</option>
-                                    <option value="telecel">📱 Telecel Cash</option>
-                                    <option value="airteltigo">📱 AirtelTigo Money</option>
+
+                    <!-- Payment Details Sections -->
+                    <div id="paymentDetailsContainer" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #ddd;">
+                        
+                        <!-- MoMo Details -->
+                        <div id="momoDetails" class="payment-details-form">
+                            <div class="form-group">
+                                <label for="momoNetwork">Network Provider</label>
+                                <select id="momoNetwork" class="form-control">
+                                    <option value="mtn">MTN Mobile Money</option>
+                                    <option value="telecel">Telecel Cash</option>
+                                    <option value="airteltigo">AirtelTigo Money</option>
                                 </select>
                             </div>
-                            <div style="margin-bottom: 1rem;">
-                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-dark); font-weight: 500;">Mobile Number *</label>
-                                <input type="tel" id="momoNumber" placeholder="0XX XXX XXXX" style="width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;" required>
-                                <small style="color: var(--text-light);">Enter your mobile money account number</small>
+                            <div class="form-group">
+                                <label for="momoNumber">Mobile Money Number</label>
+                                <input type="tel" id="momoNumber" placeholder="024xxxxxxx" class="form-control">
                             </div>
-                            <div style="padding: 1rem; background: #fff3cd; border-radius: 4px; margin-bottom: 1rem;">
-                                <p style="margin: 0; color: #856404; font-size: 0.9rem;">📌 A payment prompt will be sent to this number. Please complete the payment on your phone.</p>
+                            <div id="momoDeductionNote" style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9rem;">
+                                <strong>Note:</strong> An amount of <span class="dynamic-total">--</span> will be deducted from your Mobile Money wallet.
                             </div>
                         </div>
-                        <div id="cardDetails" style="display: none;">
-                            <h3 style="margin-top: 0; color: var(--ocean-blue);">Card Payment</h3>
-                            <p style="margin: 0; color: var(--text-dark); font-size: 0.9rem;" id="paymentInfo">You will be redirected to a secure payment gateway. Visa/Mastercard accepted.</p>
+
+                        <!-- Card Details -->
+                        <div id="cardDetails" class="payment-details-form" style="display: none;">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cardExpiry">Expiry Date</label>
+                                    <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardCvv">CVV</label>
+                                    <input type="text" id="cardCvv" placeholder="123" maxlength="3">
+                                </div>
+                            </div>
+                            <div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9rem;">
+                                <strong>Note:</strong> An amount of <span class="dynamic-total">--</span> will be charged to your card.
+                            </div>
                         </div>
-                        <div id="bankDetails" style="display: none;">
-                            <h3 style="margin-top: 0; color: var(--ocean-blue);">Bank Transfer</h3>
-                            <p style="margin: 0; color: var(--text-dark); font-size: 0.9rem;" id="paymentInfo">Bank Account: Fish Hub Ltd | Account Number: 1234567890 | Bank: GCB Bank | Reference: Order details will be sent to your email</p>
+
+                        <!-- Bank Details -->
+                        <div id="bankDetails" class="payment-details-form" style="display: none;">
+                            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <p style="margin-bottom: 0.5rem;">Please transfer the total amount to:</p>
+                                <p><strong>Bank:</strong> GT Bank</p>
+                                <p><strong>Account Name:</strong> Fish Hub Ltd</p>
+                                <p><strong>Account Number:</strong> 0123456789</p>
+                                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">* Use your Order ID as the payment reference.</p>
+                            </div>
                         </div>
                     </div>
-                    <button id="completeOrderBtn" type="submit" form="checkoutForm" class="place-order-btn" style="margin-top:1rem;">Complete Order</button>
                 </div>
+            </form>
+
+            <!-- Order Summary -->
+            <div class="order-summary" id="orderSummary">
+                <div class="summary-title">Order Summary</div>
+                <div id="orderItems"></div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₵0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span>₵5.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">₵5.00</span>
+                </div>
+                <button id="placeOrderBtn" class="place-order-btn" type="button">Place Order</button>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer style="background-color: var(--deep-blue); color: white; padding: 2rem 0; text-align: center; margin-top: auto;">
+        <p>&copy; 2026 Fish Hub. All rights reserved. Committed to sustainable seafood and healthy communities.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Created by Pius Ohene Darko</p>
+        <p style="margin-top: 0.2rem; font-size: 0.8rem; opacity: 0.6;">Trademark, Copyright, and Trade Secrets Protected</p>
+    </footer>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/checkout-handler.js"></script>
     <script>
-        const DELIVERY_FEE = 5;
-
-        function checkLogin() {
-            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = 'login.html';
-            }
-        }
-
-        function getCart() {
-            // Prefer per-user cart if present (used by CartManager)
-            try {
-                const userCartKey = Object.keys(localStorage).find(k => k.startsWith('cart_'));
-                if (userCartKey) {
-                    const userCart = JSON.parse(localStorage.getItem(userCartKey)) || { items: [], total: 0 };
-                    return Array.isArray(userCart.items) ? userCart.items : [];
-                }
-            } catch (_) {}
-            // Fallback to simple cart array
-            return JSON.parse(localStorage.getItem('cart')) || [];
-        }
-
-        function renderOrderSummary() {
-            const cart = getCart();
-            if (cart.length === 0) {
-                window.location.href = 'cart.html';
-                return;
-            }
-
-            const orderItemsDiv = document.getElementById('orderItems');
-            let subtotal = 0;
-
-            orderItemsDiv.innerHTML = cart.map(item => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
-                return `
-                    <div class="summary-item">
-                        <span>${item.name} x${item.quantity}</span>
-                        <span>₵${itemTotal.toFixed(2)}</span>
-                    </div>
-                `;
-            }).join('');
-
-            const total = subtotal + DELIVERY_FEE;
-            document.getElementById('subtotal').textContent = `₵${subtotal.toFixed(2)}`;
-            document.getElementById('total').textContent = `₵${total.toFixed(2)}`;
-        }
-
-        // Payment method selection
+        // UI Helpers for Payment Method selection
         document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
                 this.closest('.payment-option').classList.add('selected');
-
-                const paymentDetails = document.getElementById('paymentDetails');
-                const momoDetails = document.getElementById('momoDetails');
-                const cardDetails = document.getElementById('cardDetails');
-                const bankDetails = document.getElementById('bankDetails');
-
-                // Hide all payment detail sections
-                momoDetails.style.display = 'none';
-                cardDetails.style.display = 'none';
-                bankDetails.style.display = 'none';
-
-                if (this.value === 'momo') {
-                    momoDetails.style.display = 'block';
-                    paymentDetails.style.display = 'block';
-                } else if (this.value === 'visa') {
-                    cardDetails.style.display = 'block';
-                    paymentDetails.style.display = 'block';
-                } else if (this.value === 'bank') {
-                    bankDetails.style.display = 'block';
-                    paymentDetails.style.display = 'block';
-                }
             });
         });
-
-        // Trigger initial payment info
-        document.querySelector('input[name="paymentMethod"]:checked') && document.querySelector('input[name="paymentMethod"]:checked').dispatchEvent(new Event('change'));
-        // Proceed to Checkout gating
-        (function() {
-            const btn = document.getElementById('proceedBtn');
-            if (!btn) return;
-            btn.addEventListener('click', function() {
-                const steps = document.getElementById('checkoutSteps');
-                if (!steps) return;
-                steps.style.display = 'block';
-                const checked = document.querySelector('input[name="paymentMethod"]:checked');
-                if (checked) checked.dispatchEvent(new Event('change'));
-                this.style.display = 'none';
-                steps.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        })();
-
-        // Form submission
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const fullName = document.getElementById('fullName').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-            const cart = getCart();
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const total = subtotal + DELIVERY_FEE;
-
-            // Validate mobile money fields
-            if (paymentMethod === 'momo') {
-                const provider = document.getElementById('momoProvider').value;
-                const momoNumber = document.getElementById('momoNumber').value;
-
-                if (!provider) {
-                    alert('❌ Please select a service provider');
-                    return;
-                }
-
-                if (!momoNumber) {
-                    alert('❌ Please enter your mobile money number');
-                    return;
-                }
-
-                if (momoNumber.length < 10) {
-                    alert('❌ Please enter a valid mobile number');
-                    return;
-                }
-
-                // Get provider name
-                const providerName = {
-                    'mtn': 'MTN Mobile Money',
-                    'telecel': 'Telecel Cash',
-                    'airteltigo': 'AirtelTigo Money'
-                }[provider];
-
-                // Create order with MOMO details
-                const orderDetails = `
-ORDER CONFIRMATION
-==================
-Name: ${fullName}
-Phone: ${phone}
-Delivery Address: ${address}
-Payment Method: ${providerName}
-Mobile Money Number: ${momoNumber}
-
-ORDER ITEMS:
-${cart.map(item => `- ${item.name} (${item.type}) x${item.quantity}: ₵${(item.price * item.quantity).toFixed(2)}`).join('\n')}
-
-SUBTOTAL: ₵${subtotal.toFixed(2)}
-Delivery Fee: ₵${DELIVERY_FEE.toFixed(2)}
-FINAL TOTAL: ₵${total.toFixed(2)}
-
-PAYMENT INSTRUCTION:
-A payment prompt will be sent to ${momoNumber}.
-Please respond with your MOMO PIN to complete payment.
-
-Thank you for your order!
-Our delivery team will contact you shortly.
-                `;
-
-                // Send MOMO payment initiation
-                console.log('📱 Initiating MOMO payment...');
-                console.log('Provider:', providerName);
-                console.log('Number:', momoNumber);
-                console.log('Amount:', total.toFixed(2));
-
-                showMOMOPaymentPrompt(momoNumber, providerName, total, orderDetails);
-            } else {
-                // Non-MOMO payment flow
-                const orderDetails = `
-ORDER CONFIRMATION
-==================
-Name: ${fullName}
-Phone: ${phone}
-Delivery Address: ${address}
-Payment Method: ${paymentMethod.toUpperCase()}
-
-ORDER ITEMS:
-${cart.map(item => `- ${item.name} (${item.type}) x${item.quantity}: ₵${(item.price * item.quantity).toFixed(2)}`).join('\n')}
-
-TOTAL: ₵${subtotal.toFixed(2)}
-Delivery Fee: ₵${DELIVERY_FEE.toFixed(2)}
-FINAL TOTAL: ₵${total.toFixed(2)}
-
-Thank you for your order!
-Our delivery team will contact you shortly.
-                `;
-
-                showSuccessNotification();
-
-                setTimeout(() => {
-                    localStorage.removeItem('cart');
-                    sessionStorage.setItem('lastOrder', orderDetails);
-                    window.location.href = 'index.html';
-                }, 3000);
-            }
-        });
-
-        function showMOMOPaymentPrompt(momoNumber, providerName, amount, orderDetails) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <div class="notification-content" style="text-align: center;">
-                    <h3>📱 Payment Request Sent! ✅</h3>
-                    <div style="background: #fff3cd; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0;">
-                        <p style="margin: 0.5rem 0; color: #856404; font-weight: bold;">Service: ${providerName}</p>
-                        <p style="margin: 0.5rem 0; color: #856404; font-weight: bold;">Number: ${momoNumber}</p>
-                        <p style="margin: 0.5rem 0; color: #856404; font-weight: bold; font-size: 1.2rem;">Amount: ₵${amount.toFixed(2)}</p>
-                    </div>
-                    <p style="color: var(--text-dark); margin: 1rem 0;">A payment prompt has been sent to your phone.</p>
-                    <p style="color: var(--text-dark); margin: 1rem 0;">✔️ Check your phone and enter your MOMO PIN to complete payment</p>
-                    <p style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.8; color: var(--text-light);">Redirecting after confirmation...</p>
-                </div>
-            `;
-            document.body.appendChild(notification);
-
-            // Simulate payment confirmation after delay
-            setTimeout(() => {
-                localStorage.removeItem('cart');
-                sessionStorage.setItem('lastOrder', orderDetails);
-                window.location.href = 'index.html';
-            }, 5000);
-        }
-
-        function showSuccessNotification() {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <div class="notification-content">
-                    <h3>Order Placed Successfully! ✅</h3>
-                    <p>Thank you for shopping at Fish Hub!</p>
-                    <p>Our delivery team will contact you shortly to confirm the details.</p>
-                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">Redirecting you home...</p>
-                </div>
-            `;
-            document.body.appendChild(notification);
-        }
-
-        document.getElementById('logoutLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            sessionStorage.removeItem('isLoggedIn');
-            sessionStorage.removeItem('userEmail');
-            localStorage.removeItem('cart');
-            window.location.href = 'login.html';
-        });
-
-        renderOrderSummary();
     </script>
-    
 </body>
 </html>

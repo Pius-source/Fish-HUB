@@ -104,6 +104,7 @@ router.get('/me/dashboard', verifySeller, (req, res) => {
 
     res.json({
       seller,
+      products,
       stats: {
         productCount: products.length,
         totalOrders: totalSales,

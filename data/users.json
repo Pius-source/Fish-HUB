@@ -94,5 +94,101 @@
     "createdAt": "2026-01-19T18:28:27.811Z",
     "status": "active",
     "emailVerified": true
+  },
+  {
+    "id": "fa5b43c2-bc79-4f70-9e3b-2bccc99a5a8c",
+    "email": "victordarko73@gmail.com",
+    "password": "$2a$10$RGrOBTha1994JYYweQ6KuukcVnjDib08pprXcHXkTEX2Qwp6P.nki",
+    "name": "maxwell",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-24T12:28:29.755Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "651515cb-869d-4597-9d58-814b1ac100a9",
+    "email": "victor73@gmail.com",
+    "password": "$2a$10$I9xpOMfVlGagELcnTgL9w.SRDytRjJRtN4sVvNJr8j3zi4aEj9BdK",
+    "name": "maxwell",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-24T12:46:02.365Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "5d3fcf79-e8d5-4fd1-94c5-2f1c748b25b1",
+    "email": "quaminaprof2002@gmail.com",
+    "password": "$2a$10$kqK.VXTmJat7BN340JexgOSnDk9xxFon58Fd9XY1Xd0.O56yFjNF6",
+    "name": "maxwell",
+    "phone": "0545748561",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-01-24T17:57:31.188Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "edf949b2-991c-4d5a-ac0a-be150cbab3eb",
+    "email": "piusohened@gmail.com",
+    "password": "$2a$10$QP4gjxhgg7OBy7gDxkmLIu9.1fm3F8gMRyIv/19sKIceUvCyT/Axe",
+    "name": "Pius",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-01-24T18:03:34.944Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "a18279da-6f62-4916-8eae-7cb1b44cd181",
+    "email": "kofi@gmail.com",
+    "password": "$2a$10$zSwJ1k/OkLvINnwqI5TExORO8fXgE8Ky9xWrCr1c2atI8G3Mul.Dy",
+    "name": "kofi",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-01-24T18:11:05.041Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "5ccc78ff-7080-4161-9e76-d8c1360ff0ab",
+    "email": "ohenedarkopius611@gmail.com",
+    "password": "$2a$10$Z.0060ERxCNnAkwRCFfi..Hzr6lCeWLw/pjxbJ4jiffqhJLQS4XT2",
+    "name": "Victor",
+    "phone": "0540851637",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-02-02T03:09:15.499Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "c5510c35-2377-498d-90a0-c1cf2afc1b20",
+    "email": "piusohenedarko@gmail.com",
+    "password": "$2a$10$i7DuiWZFfTVagi1IuAA8QOoaQldco2jQg03EDZE.Cc/ecufq6.EHO",
+    "name": "daa",
+    "phone": "0540851637",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-02-02T03:10:22.550Z",
+    "status": "pending_verification",
+    "emailVerified": false
+  },
+  {
+    "id": "db14ddc7-0981-47e9-a17b-ac0b9ef5d72d",
+    "email": "piusohenedark@gmail.com",
+    "password": "$2a$10$NOrz3NrwO3Jj448WrISh7uV8vgawQWAClYnXyeDfX4SEUtqoNooD.",
+    "name": "ama",
+    "phone": "",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-02-02T03:17:58.136Z",
+    "status": "pending_verification",
+    "emailVerified": false
   }
 ]

@@ -1,4 +1,4 @@
-{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -425,10 +425,11 @@ nav {
 
         /* Footer */
         footer {
-            background: var(--text-dark);
+            background: var(--deep-blue);
             color: var(--white);
             padding: 2rem 5%;
             text-align: center;
+            margin-top: auto;
         }
 
         /* Animations */

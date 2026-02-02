@@ -1,8 +1,8 @@
 // API Configuration
-// Dynamically set API URL based on environment
-const API_BASE_URL = window.location.hostname === 'localhost' 
+// Dynamically set API URL based on environment. Use same origin for non-localhost pages.
+const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api'
-  : 'https://your-backend-url.com/api'; // Change this to your actual backend URL after deployment
+  : `${window.location.origin}/api`;
 
 console.log('🌐 API Base URL:', API_BASE_URL);
 console.log('🌐 Current Host:', window.location.hostname);
@@ -334,13 +334,24 @@ class ProductManager {
     }
   }
 
-  async getSellerProducts(sellerId) {
+  async getSellerProducts() {
     try {
-      const response = await fetch(`${API_BASE_URL}/products?seller=${sellerId}`);
-      return await response.json();
+      const response = await fetch(`${API_BASE_URL}/sellers/me/dashboard`, {
+        headers: {
+          'Authorization': `Bearer ${auth.getToken()}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return { products: data.products || [], seller: data.seller, stats: data.stats };
+      }
+
+      return { products: [], error: data.error || 'Failed to fetch seller products' };
     } catch (err) {
       console.error('Error fetching seller products:', err);
-      return { products: [] };
+      return { products: [], error: err.message };
     }
   }
 }
