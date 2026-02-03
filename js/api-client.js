@@ -7,6 +7,44 @@ const API_BASE_URL = (window.location.hostname === 'localhost' || window.locatio
 console.log('🌐 API Base URL:', API_BASE_URL);
 console.log('🌐 Current Host:', window.location.hostname);
 
+/**
+ * Safely parse fetch responses. If response is JSON, returns { data, isJson:true }.
+ * Otherwise returns { data: null, isJson:false, text } with body text for debugging.
+ */
+async function safeParseResponse(response) {
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    try {
+      const data = await response.json();
+      return { data, isJson: true };
+    } catch (err) {
+      const text = await response.text();
+      return { data: null, isJson: false, text };
+    }
+  } else {
+    const text = await response.text();
+    return { data: null, isJson: false, text };
+  }
+}
+
+async function fetchJson(url, options = {}) {
+  const response = await fetch(url, options);
+  const parsed = await safeParseResponse(response);
+  return { ok: response.ok, status: response.status, data: parsed.data, text: parsed.text, isJson: parsed.isJson };
+}
+
+// Normalize server errors: strip HTML and shorten long bodies
+function formatError(response, parsed) {
+  if (parsed.isJson) {
+    if (parsed.data && parsed.data.error) return parsed.data.error;
+    if (typeof parsed.data === 'string') return parsed.data;
+    return 'Invalid JSON response from server';
+  }
+  const text = (parsed.text || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  const short = text.length > 200 ? text.slice(0,197) + '...' : text;
+  return `Server returned ${response.status} ${response.statusText}${short ? ' - ' + short : ''}`;
+}
+
 // Auth Manager
 class AuthManager {
   constructor() {
@@ -34,10 +72,18 @@ class AuthManager {
       console.log('   Response status:', response.status);
       console.log('   Response ok:', response.ok);
 
-      const data = await response.json();
-      console.log('   Response data:', data);
+      const parsed = await safeParseResponse(response);
+      const data = parsed.data;
+      if (!parsed.isJson) {
+        console.warn('⚠️ Expected JSON from', url, 'status:', response.status, 'body:', parsed.text);
+      }
+      console.log('   Response data:', data ?? parsed.text);
 
       if (response.ok) {
+        if (!data) {
+          console.error('❌ Register failed: server did not return valid JSON');
+          return { success: false, error: 'Invalid JSON response from server' };
+        }
         this.token = data.token;
         this.user = data.user;
         localStorage.setItem('token', this.token);
@@ -46,8 +92,9 @@ class AuthManager {
         return { success: true, data };
       }
 
-      console.log('❌ Register failed:', data.error);
-      return { success: false, error: data.error };
+      const serverErr = (data && data.error) || formatError(response, parsed) || 'Unknown error';
+      console.log('❌ Register failed:', serverErr);
+      return { success: false, error: serverErr };
     } catch (err) {
       console.error('❌ Register exception:', err);
       return { success: false, error: err.message };
@@ -71,10 +118,18 @@ class AuthManager {
       console.log('   Response status:', response.status);
       console.log('   Response ok:', response.ok);
 
-      const data = await response.json();
-      console.log('   Response data:', data);
+      const parsed = await safeParseResponse(response);
+      const data = parsed.data;
+      if (!parsed.isJson) {
+        console.warn('⚠️ Expected JSON from', url, 'status:', response.status, 'body:', parsed.text);
+      }
+      console.log('   Response data:', data ?? parsed.text);
 
       if (response.ok) {
+        if (!data) {
+          console.error('❌ Login failed: server did not return valid JSON');
+          return { success: false, error: 'Invalid JSON response from server' };
+        }
         this.token = data.token;
         this.user = data.user;
         localStorage.setItem('token', this.token);
@@ -83,8 +138,9 @@ class AuthManager {
         return { success: true, data };
       }
 
-      console.log('❌ Login failed:', data.error);
-      return { success: false, error: data.error };
+      const serverErr = (data && data.error) || formatError(response, parsed) || 'Unknown error';
+      console.log('❌ Login failed:', serverErr);
+      return { success: false, error: serverErr };
     } catch (err) {
       console.error('❌ Login exception:', err);
       return { success: false, error: err.message };
@@ -121,15 +177,20 @@ class AuthManager {
         body: JSON.stringify({ name, phone, addresses })
       });
 
-      const data = await response.json();
+      const parsed = await safeParseResponse(response);
+      const data = parsed.data;
+      if (!parsed.isJson) {
+        console.warn('⚠️ Expected JSON from updateProfile, status:', response.status, 'body:', parsed.text);
+      }
 
       if (response.ok) {
+        if (!data) return { success: false, error: 'Invalid JSON response from server' };
         this.user = data.user;
         localStorage.setItem('user', JSON.stringify(this.user));
         return { success: true, data };
       }
 
-      return { success: false, error: data.error };
+      return { success: false, error: (data && data.error) || formatError(response, parsed) || 'Unknown error' };
     } catch (err) {
       return { success: false, error: err.message };
     }
@@ -224,8 +285,10 @@ class ProductManager {
       if (filters.search) params.append('search', filters.search);
       if (filters.sortBy) params.append('sortBy', filters.sortBy);
 
-      const response = await fetch(`${API_BASE_URL}/products?${params}`);
-      return await response.json();
+      const res = await fetchJson(`${API_BASE_URL}/products?${params}`);
+      if (res.isJson) return res.data;
+      console.warn('⚠️ Expected JSON from getProducts, body:', res.text);
+      return { total: 0, products: [] };
     } catch (err) {
       console.error('Error fetching products:', err);
       return { total: 0, products: [] };
@@ -234,8 +297,10 @@ class ProductManager {
 
   async getProduct(id) {
     try {
-      const response = await fetch(`${API_BASE_URL}/products/${id}`);
-      return await response.json();
+      const res = await fetchJson(`${API_BASE_URL}/products/${id}`);
+      if (res.isJson) return res.data;
+      console.warn('⚠️ Expected JSON from getProduct, body:', res.text);
+      return null;
     } catch (err) {
       console.error('Error fetching product:', err);
       return null;
@@ -253,7 +318,10 @@ class ProductManager {
         body: JSON.stringify(product)
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from createProduct, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error creating product:', err);
       return { error: err.message };
@@ -271,7 +339,10 @@ class ProductManager {
         body: JSON.stringify(product)
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from updateProduct, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error updating product:', err);
       return { error: err.message };
@@ -280,8 +351,10 @@ class ProductManager {
 
   async getCategories() {
     try {
-      const response = await fetch(`${API_BASE_URL}/products/categories/all`);
-      return await response.json();
+      const res = await fetchJson(`${API_BASE_URL}/products/categories/all`);
+      if (res.isJson) return res.data;
+      console.warn('⚠️ Expected JSON from getCategories, body:', res.text);
+      return [] ;
     } catch (err) {
       console.error('Error fetching categories:', err);
       return [];
@@ -304,13 +377,18 @@ class ProductManager {
         body: JSON.stringify(product)
       });
 
-      const data = await response.json();
+      const parsed = await safeParseResponse(response);
+      const data = parsed.data;
+      if (!parsed.isJson) {
+        console.warn('⚠️ Expected JSON from addProduct, status:', response.status, 'body:', parsed.text);
+      }
 
       if (response.ok) {
+        if (!data) return { error: 'Invalid JSON response from server' };
         return { success: true, data };
       }
 
-      return { error: data.error || 'Failed to add product' };
+      return { error: (data && data.error) || formatError(response, parsed) || 'Failed to add product' };
     } catch (err) {
       console.error('Error adding product:', err);
       return { error: err.message };
@@ -326,13 +404,17 @@ class ProductManager {
         }
       });
 
-      const data = await response.json();
+      const parsed = await safeParseResponse(response);
+      const data = parsed.data;
+      if (!parsed.isJson) {
+        console.warn('⚠️ Expected JSON from deleteProduct, status:', response.status, 'body:', parsed.text);
+      }
 
       if (response.ok) {
         return { success: true };
       }
 
-      return { error: data.error || 'Failed to delete product' };
+      return { error: (data && data.error) || formatError(response, parsed) || 'Failed to delete product' };
     } catch (err) {
       console.error('Error deleting product:', err);
       return { error: err.message };
@@ -347,13 +429,18 @@ class ProductManager {
         }
       });
 
-      const data = await response.json();
+      const parsed = await safeParseResponse(response);
+      const data = parsed.data;
+      if (!parsed.isJson) {
+        console.warn('⚠️ Expected JSON from getSellerProducts, status:', response.status, 'body:', parsed.text);
+      }
 
       if (response.ok) {
+        if (!data) return { products: [], error: 'Invalid JSON response from server' };
         return { products: data.products || [], seller: data.seller, stats: data.stats };
       }
 
-      return { products: [], error: data.error || 'Failed to fetch seller products' };
+      return { products: [], error: (data && data.error) || formatError(response, parsed) || 'Failed to fetch seller products' };
     } catch (err) {
       console.error('Error fetching seller products:', err);
       return { products: [], error: err.message };
@@ -383,7 +470,10 @@ class OrderManager {
         })
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from createOrder, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error creating order:', err);
       return { error: err.message };
@@ -398,7 +488,10 @@ class OrderManager {
         }
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getUserOrders, body:', parsed.text);
+      return { total: 0, orders: [] };
     } catch (err) {
       console.error('Error fetching orders:', err);
       return { total: 0, orders: [] };
@@ -413,7 +506,10 @@ class OrderManager {
         }
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getOrder, body:', parsed.text);
+      return null;
     } catch (err) {
       console.error('Error fetching order:', err);
       return null;
@@ -431,7 +527,10 @@ class OrderManager {
         body: JSON.stringify({ status })
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from updateOrderStatus, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error updating order status:', err);
       return { error: err.message };
@@ -449,7 +548,10 @@ class OrderManager {
         body: JSON.stringify({ paymentStatus })
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from updatePaymentStatus, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error updating payment status:', err);
       return { error: err.message };
@@ -464,7 +566,10 @@ class OrderManager {
         }
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getSellerOrders, body:', parsed.text);
+      return { orders: [] };
     } catch (err) {
       console.error('Error fetching seller orders:', err);
       return { orders: [] };
@@ -489,7 +594,10 @@ class ReviewManager {
         body: JSON.stringify({ productId, orderId, rating, comment })
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from createReview, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error creating review:', err);
       return { error: err.message };
@@ -499,7 +607,10 @@ class ReviewManager {
   async getProductReviews(productId) {
     try {
       const response = await fetch(`${API_BASE_URL}/reviews/product/${productId}`);
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getProductReviews, body:', parsed.text);
+      return { total: 0, reviews: [] };
     } catch (err) {
       console.error('Error fetching reviews:', err);
       return { total: 0, reviews: [] };
@@ -514,7 +625,10 @@ class ReviewManager {
         }
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getUserReviews, body:', parsed.text);
+      return { total: 0, reviews: [] };
     } catch (err) {
       console.error('Error fetching user reviews:', err);
       return { total: 0, reviews: [] };
@@ -527,7 +641,10 @@ class ReviewManager {
         method: 'PUT'
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from markHelpful, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error marking review:', err);
       return { error: err.message };
@@ -552,7 +669,10 @@ class SellerManager {
         body: JSON.stringify({ shopName, description, phone, address })
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from registerSeller, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error registering seller:', err);
       return { error: err.message };
@@ -567,7 +687,10 @@ class SellerManager {
         }
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getSellerDashboard, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error fetching dashboard:', err);
       return { error: err.message };
@@ -577,7 +700,10 @@ class SellerManager {
   async getSeller(sellerId) {
     try {
       const response = await fetch(`${API_BASE_URL}/sellers/${sellerId}`);
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getSeller, body:', parsed.text);
+      return null;
     } catch (err) {
       console.error('Error fetching seller:', err);
       return null;
@@ -587,7 +713,10 @@ class SellerManager {
   async getAllSellers() {
     try {
       const response = await fetch(`${API_BASE_URL}/sellers`);
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from getAllSellers, body:', parsed.text);
+      return { total: 0, sellers: [] };
     } catch (err) {
       console.error('Error fetching sellers:', err);
       return { total: 0, sellers: [] };
@@ -605,7 +734,10 @@ class SellerManager {
         body: JSON.stringify({ shopName, description, phone, address })
       });
 
-      return await response.json();
+      const parsed = await safeParseResponse(response);
+      if (parsed.isJson) return parsed.data;
+      console.warn('⚠️ Expected JSON from updateSellerProfile, body:', parsed.text);
+      return { error: formatError(response, parsed) || 'Invalid response from server' };
     } catch (err) {
       console.error('Error updating seller:', err);
       return { error: err.message };

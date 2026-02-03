@@ -116,7 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'index.html';
       } else if (result && result.error) {
         console.error('❌ Auth failed:', result.error);
-        showError(result.error);
+        if (typeof result.error === 'string' && (result.error.includes('Server returned') || result.error.includes('Invalid JSON') || result.error.includes('did not return'))) {
+          showError('Server error: API may be down or returning HTML instead of JSON. Check backend and API URL.');
+        } else {
+          showError(result.error);
+        }
       } else {
         console.error('❌ Unexpected result:', result);
         showError('Registration failed. Please try again.');
