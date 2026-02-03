@@ -45,6 +45,14 @@ function formatError(response, parsed) {
   return `Server returned ${response.status} ${response.statusText}${short ? ' - ' + short : ''}`;
 }
 
+// Quick dev flag — when true, uses localStorage for auth instead of backend (temporary)
+const USE_LOCAL_AUTH = true;
+
+/* Local user helpers for dev mode */
+function getLocalUsers() { return JSON.parse(localStorage.getItem('localUsers') || '[]'); }
+function saveLocalUsers(users) { localStorage.setItem('localUsers', JSON.stringify(users)); }
+function findLocalUserByEmail(email) { return getLocalUsers().find(u => u.email === email); }
+
 // Auth Manager
 class AuthManager {
   constructor() {
@@ -57,6 +65,25 @@ class AuthManager {
 
   async register(email, password, name, phone, role = 'buyer') {
     try {
+      // Temporary local fallback for signing up when backend is not available
+      if (USE_LOCAL_AUTH) {
+        console.log('⚠️ Using local auth for register (no backend)');
+        const users = getLocalUsers();
+        if (users.find(u => u.email === email)) {
+          return { success: false, error: 'Email already registered (local)' };
+        }
+        const newUser = { id: 'local_' + Date.now(), email, password, name, phone, role, createdAt: new Date().toISOString() };
+        users.push(newUser);
+        saveLocalUsers(users);
+        const token = 'local-token-' + btoa(email + ':' + Date.now());
+        this.token = token;
+        this.user = { ...newUser };
+        localStorage.setItem('token', this.token);
+        localStorage.setItem('user', JSON.stringify(this.user));
+        console.log('✅ Local register successful');
+        return { success: true, data: { token: this.token, user: this.user } };
+      }
+
       const url = `${API_BASE_URL}/auth/register`;
       const payload = { email, password, name, phone, role };
       
@@ -103,6 +130,23 @@ class AuthManager {
 
   async login(email, password) {
     try {
+      // Temporary local fallback for login when backend is not available
+      if (USE_LOCAL_AUTH) {
+        console.log('⚠️ Using local auth for login (no backend)');
+        const users = getLocalUsers();
+        const found = users.find(u => u.email === email && u.password === password);
+        if (!found) {
+          return { success: false, error: 'Invalid credentials (local)' };
+        }
+        const token = 'local-token-' + btoa(email + ':' + Date.now());
+        this.token = token;
+        this.user = { ...found };
+        localStorage.setItem('token', this.token);
+        localStorage.setItem('user', JSON.stringify(this.user));
+        console.log('✅ Local login successful');
+        return { success: true, data: { token: this.token, user: this.user } };
+      }
+
       const url = `${API_BASE_URL}/auth/login`;
       const payload = { email, password };
       
@@ -168,6 +212,22 @@ class AuthManager {
 
   async updateProfile(name, phone, addresses) {
     try {
+      // Local fallback for profile updates when using local auth
+      if (USE_LOCAL_AUTH) {
+        console.log('⚠️ Using local auth for updateProfile (no backend)');
+        const users = getLocalUsers();
+        const currentEmail = this.user && this.user.email;
+        const idx = users.findIndex(u => u.email === currentEmail);
+        if (idx >= 0) {
+          users[idx] = { ...users[idx], name, phone, addresses };
+          saveLocalUsers(users);
+          this.user = users[idx];
+          localStorage.setItem('user', JSON.stringify(this.user));
+          return { success: true, data: { user: this.user } };
+        }
+        return { success: false, error: 'Local user not found' };
+      }
+
       const response = await fetch(`${API_BASE_URL}/auth/profile`, {
         method: 'PUT',
         headers: {
