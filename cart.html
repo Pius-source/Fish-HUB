@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -372,3 +373,379 @@
     <script src="js/cart-handler.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Fish Hub</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .cart-container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem 5%;
+            min-height: 70vh;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 1rem;
+        }
+
+        .cart-header h1 {
+            color: var(--ocean-blue);
+            font-size: 2.5rem;
+        }
+
+        .continue-shopping {
+            background: var(--seafoam);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .continue-shopping:hover {
+            background: var(--deep-blue);
+        }
+
+        .cart-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .cart-items {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .empty-cart-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--light-blue);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--seafoam) 0%, var(--ocean-blue) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .cart-item-details h3 {
+            color: var(--ocean-blue);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .cart-item-details p {
+            color: var(--text-light);
+            margin: 0.2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-price {
+            text-align: right;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--coral);
+        }
+
+        .item-quantity {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .qty-btn {
+            background: var(--light-blue);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--ocean-blue);
+            transition: background 0.3s;
+        }
+
+        .qty-btn:hover {
+            background: var(--ocean-blue);
+            color: var(--white);
+        }
+
+        .qty-display {
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background: var(--coral);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .remove-btn:hover {
+            background: #ff5252;
+        }
+
+        .cart-summary {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .summary-title {
+            color: var(--ocean-blue);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--ocean-blue);
+            padding-bottom: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .summary-row.total {
+            border-top: 2px solid var(--ocean-blue);
+            padding-top: 1rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--ocean-blue);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--seafoam) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 119, 190, 0.3);
+        }
+
+        .checkout-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Fish Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#products">Products</a></li>
+                <li><a href="cart.html" style="color: var(--coral); font-weight: bold;">🛒 Cart</a></li>
+                <li><a href="#" id="logoutLink">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Shopping Cart</h1>
+            <a href="index.html#products" class="continue-shopping">Continue Shopping</a>
+        </div>
+
+        <div class="cart-content">
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h2>Your cart is empty</h2>
+                    <p>Add some products to get started!</p>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-title">Order Summary</div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₵0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span>₵5.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">₵5.00</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background-color: var(--deep-blue); color: white; padding: 2rem 0; text-align: center; margin-top: auto;">
+        <p>&copy; 2026 Fish Hub. All rights reserved. Committed to sustainable seafood and healthy communities.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Created by Pius Ohene Darko</p>
+        <p style="margin-top: 0.2rem; font-size: 0.8rem; opacity: 0.6;">Trademark, Copyright, and Trade Secrets Protected</p>
+    </footer>
+
+    <script>
+        const DELIVERY_FEE = 5;
+
+        function checkLogin() {
+            if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const cartItemsDiv = document.getElementById('cartItems');
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <h2>Your cart is empty</h2>
+                        <p>Add some products to get started!</p>
+                    </div>
+                `;
+                document.getElementById('checkoutBtn').disabled = true;
+                updateSummary();
+                return;
+            }
+
+            document.getElementById('checkoutBtn').disabled = false;
+            cartItemsDiv.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-image">${item.icon}</div>
+                    <div class="cart-item-details">
+                        <h3>${item.name}</h3>
+                        <p>${item.type}</p>
+                        <p class="item-price">₵${(item.price * item.quantity).toFixed(2)}</p>
+                        <div class="item-quantity">
+                            <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
+                            <span class="qty-display">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                    </div>
+                    <div class="cart-item-price">
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Unit Price</div>
+                        <div class="item-price">₵${item.price.toFixed(2)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateQuantity(index, change) {
+            const cart = getCart();
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart(cart);
+            renderCart();
+            updateSummary();
+        }
+
+        function removeItem(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCart();
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const cart = getCart();
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + DELIVERY_FEE;
+
+            document.getElementById('subtotal').textContent = `₵${subtotal.toFixed(2)}`;
+            document.getElementById('total').textContent = `₵${total.toFixed(2)}`;
+        }
+
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            window.location.href = 'checkout.html';
+        });
+
+        document.getElementById('logoutBtn') = document.getElementById('logoutLink');
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('userEmail');
+            localStorage.removeItem('cart');
+            window.location.href = 'login.html';
+        });
+
+    </script>
+    <script src="js/api-client.js"></script>
+    <script src="js/cart-handler.js"></script>
+</body>
+</html>
+>>>>>>> d95fc8aba83c39b73c2ce34485280b4798a34bfa

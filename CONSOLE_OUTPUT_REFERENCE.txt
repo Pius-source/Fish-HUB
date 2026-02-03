@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 📊 EXPECTED CONSOLE OUTPUT - REFERENCE
 ======================================
 
@@ -270,3 +271,277 @@ DEBUGGING CHECKLIST
 □ Error or success? (see ✅ or ❌ message)
 
 ✅ HAPPY DEBUGGING! The console output will tell you exactly what's wrong!
+=======
+📊 EXPECTED CONSOLE OUTPUT - REFERENCE
+======================================
+
+When login works correctly, here's what you'll see in browser console:
+
+INITIAL PAGE LOAD
+=================
+Copy-paste this into console to see expected state:
+
+🌐 API Base URL: http://localhost:5000/api
+🔐 Login handler script loaded
+🔐 DOM loaded, initializing login form...
+✅ AuthManager initialized
+   Token exists: false
+   User exists: false
+🔄 Initializing toggle listener...
+🔄 Attaching toggle listener, element found: true
+
+IF YOU SEE THE ABOVE: ✅ System is ready to use
+
+CLICKING REGISTER LINK
+======================
+Click the "Register" link, watch for:
+
+🔄 Toggle clicked! Switching mode...
+🔄 Switched to REGISTER mode
+🔄 Attaching toggle listener, element found: true
+
+Form should now show extra fields (Name, Phone, Role)
+
+CLICKING LOGIN LINK
+===================
+Click the "Login" link, watch for:
+
+🔄 Toggle clicked! Switching mode...
+🔄 Switched to LOGIN mode
+🔄 Attaching toggle listener, element found: true
+
+Form should hide extra fields, show only Email and Password
+
+SUCCESSFUL REGISTRATION
+========================
+Fill form and click Register:
+
+📝 Form submitted, mode: REGISTER
+📧 Email: test@...
+🔑 Password: 11 chars
+📋 Calling auth.register()...
+   Name: Test User
+   Phone: 0123456789
+   Role: buyer
+
+📨 Sending register request to: http://localhost:5000/api/auth/register
+   Payload: {email: "test@email.com", name: "Test User", phone: "0123456789", role: "buyer", password: "***"}
+
+   Response status: 201
+   Response ok: true
+   Response data: {
+     message: "User registered successfully",
+     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTc2ZDc2NjEyZWZlMDAwMDAyMjc3ZTYiLCJpYXQiOjE2MzUzOTA5NzEsImV4cCI6MTYzNTk5NTc3MX0.WqxVzD_4c1uXsQ_hF...",
+     user: {
+       id: "6176d76612efe0000022...",
+       email: "test@email.com",
+       name: "Test User",
+       phone: "0123456789",
+       role: "buyer",
+       createdAt: "2021-10-28T12:09:31.000Z"
+     }
+   }
+
+✅ Register successful, token stored
+✅ Auth successful! Redirecting to home page...
+
+PAGE REDIRECTS TO: index.html
+LOGGED IN STATE: ✅ Now you can see products, cart, etc.
+
+SUCCESSFUL LOGIN
+================
+Fill form and click Login:
+
+📝 Form submitted, mode: LOGIN
+📧 Email: test@...
+🔑 Password: 11 chars
+🔐 Calling auth.login()...
+
+📧 Sending login request to: http://localhost:5000/api/auth/login
+   Payload: {email: "test@email.com", password: "***"}
+
+   Response status: 200
+   Response ok: true
+   Response data: {
+     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTc2ZDc2NjEyZWZlMDAwMDAyMjc3ZTYiLCJpYXQiOjE2MzUzOTA5NzEsImV4cCI6MTYzNTk5NTc3MX0.WqxVzD_4c1uXsQ_hF...",
+     user: {
+       id: "6176d76612efe0000022...",
+       email: "test@email.com",
+       name: "Test User",
+       phone: "0123456789",
+       role: "buyer",
+       createdAt: "2021-10-28T12:09:31.000Z"
+     }
+   }
+
+✅ Login successful, token stored
+✅ Auth successful! Redirecting to home page...
+
+PAGE REDIRECTS TO: index.html
+LOGGED IN STATE: ✅ You're logged in!
+
+ERROR: EMAIL ALREADY EXISTS
+===========================
+Try registering with same email:
+
+📝 Form submitted, mode: REGISTER
+📧 Email: test@...
+🔑 Password: 11 chars
+📋 Calling auth.register()...
+
+📨 Sending register request to: http://localhost:5000/api/auth/register
+   Payload: {email: "test@email.com", ...}
+
+   Response status: 400
+   Response ok: false
+   Response data: {
+     error: "Email already exists"
+   }
+
+❌ Register failed: Email already exists
+
+ERROR MESSAGE SHOWS: "Email already exists"
+FORM STAYS ON PAGE: User can try different email
+
+ERROR: INVALID EMAIL OR PASSWORD
+=================================
+Login with wrong credentials:
+
+📝 Form submitted, mode: LOGIN
+📧 Email: test@...
+🔑 Password: 8 chars (wrong password)
+🔐 Calling auth.login()...
+
+📧 Sending login request to: http://localhost:5000/api/auth/login
+   Payload: {email: "test@email.com", password: "***"}
+
+   Response status: 401
+   Response ok: false
+   Response data: {
+     error: "Invalid email or password"
+   }
+
+❌ Login failed: Invalid email or password
+
+ERROR MESSAGE SHOWS: "Invalid email or password"
+FORM STAYS ON PAGE: User can retry with correct password
+
+ERROR: SERVER NOT RUNNING
+==========================
+If server crashed or isn't running:
+
+📝 Form submitted, mode: LOGIN
+📧 Email: test@...
+🔑 Password: 11 chars
+🔐 Calling auth.login()...
+
+❌ Login exception: TypeError: Failed to fetch
+
+ERROR MESSAGE: (generic) "An error occurred: Failed to fetch"
+LIKELY CAUSE: Server not running (check terminal)
+SOLUTION: npm start in server terminal
+
+ERROR: WRONG API URL
+====================
+If API_BASE_URL is incorrect:
+
+📨 Sending login request to: http://localhost:5000/api/auth/login
+
+(very long delay...)
+
+❌ Login exception: TypeError: fetch failed
+
+SOLUTION: Check API_BASE_URL at top of api-client.js
+
+HOW TO COMPARE YOUR OUTPUT
+==========================
+
+When something goes wrong, compare:
+
+1. Initial load output:
+   - Do you see all 5+ blue messages?
+   - Or are some missing?
+   - Record which ones appear
+
+2. Form submission output:
+   - Do you see "Form submitted"?
+   - Do you see "Calling auth.login()"?
+   - Do you see API request details?
+
+3. Response output:
+   - What's the Response status? (200, 201, 400, 500, etc.)
+   - Is there an error message?
+   - Does it match any examples above?
+
+4. Final output:
+   - Success message ✅?
+   - Or error message ❌?
+   - Does it redirect or stay on page?
+
+COPY-PASTE THE EXACT ERRORS YOU SEE
+===================================
+
+If your output doesn't match the examples above:
+1. Copy the console output (select all, Ctrl+C)
+2. Compare line by line with examples
+3. Find the first difference
+4. That's where the problem is
+
+Example comparisons:
+
+Your output: "Response status: 404"
+Expected: "Response status: 200 or 201"
+Problem: Server route not found
+Fix: Restart server
+
+Your output: "TypeError: fetch failed"
+Expected: "Response status: [number]"
+Problem: Can't reach server
+Fix: npm start
+
+Your output: (nothing in console)
+Expected: "🌐 API Base URL: ..."
+Problem: Scripts not loading
+Fix: Refresh page, check files exist
+
+TESTING WITH CURL
+=================
+
+If you want to test the API directly (no browser):
+
+Open Terminal and run:
+
+1. Check server is working:
+   curl http://localhost:5000/api/health
+   
+   Expected: {"status":"ok"}
+
+2. Test register:
+   curl -X POST http://localhost:5000/api/auth/register \
+     -H "Content-Type: application/json" \
+     -d '{"email":"curl@test.com","password":"test123","name":"Test","phone":"0123456789","role":"buyer"}'
+   
+   Expected: {"message":"...","token":"...","user":{...}}
+
+3. Test login:
+   curl -X POST http://localhost:5000/api/auth/login \
+     -H "Content-Type: application/json" \
+     -d '{"email":"curl@test.com","password":"test123"}'
+   
+   Expected: Same as register response
+
+DEBUGGING CHECKLIST
+===================
+
+□ Server running? (npm start shows green message)
+□ Browser console open? (F12 → Console tab)
+□ Page shows initial messages? (5+ blue logs)
+□ Can toggle between Login/Register? (links work)
+□ Form accepts input? (can type email/password)
+□ Form submits? (logs appear when clicking button)
+□ API request sent? (see "Sending ... request to" message)
+□ Response received? (see "Response status:" message)
+□ Error or success? (see ✅ or ❌ message)
+
+✅ HAPPY DEBUGGING! The console output will tell you exactly what's wrong!
+>>>>>>> d95fc8aba83c39b73c2ce34485280b4798a34bfa

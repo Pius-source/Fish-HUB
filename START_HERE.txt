@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 🐟 FISH HUB - START HERE
 ========================
 
@@ -126,3 +127,133 @@ You're all set!
 Start with: npm start
 
 Enjoy! 🐟
+=======
+🐟 FISH HUB - START HERE
+========================
+
+Your complete e-commerce platform is ready to run!
+
+STEP 1: Open Terminal/Command Prompt
+====================================
+
+Windows:
+  - Press: WIN + R
+  - Type: cmd
+  - Press: Enter
+  - You get a black window
+
+Mac/Linux:
+  - Open Terminal app
+  - You get a black window
+
+STEP 2: Navigate to Project
+====================================
+
+Type this command:
+  cd e:\web apps\max
+
+Then press ENTER
+
+You should see:
+  e:\web apps\max>
+
+STEP 3: Install Dependencies (First Time Only)
+====================================
+
+Type this command:
+  npm install
+
+Wait for it to complete (might take 1-2 minutes)
+
+You should see:
+  added X packages
+
+STEP 4: Start the Server
+====================================
+
+Type this command:
+  npm start
+
+You should see:
+  ✓ Fish Hub Server running on http://localhost:5000
+  ✓ API available at http://localhost:5000/api
+
+STEP 5: Open in Browser
+====================================
+
+Open your web browser and go to:
+  http://localhost:5000
+
+You'll see the Fish Hub homepage! 🎉
+
+---
+
+KEEP TERMINAL RUNNING!
+Don't close the terminal - it keeps the server running.
+
+To stop the server:
+  Press: CTRL + C
+
+To start again:
+  npm start
+
+---
+
+NEXT STEPS
+==========
+
+1. Register a new account (Buyer or Seller)
+2. Browse products
+3. Add items to cart
+4. Proceed to checkout
+5. Place your order!
+
+---
+
+DOCUMENTATION
+==============
+
+For detailed info, read:
+  - README.md (full guide)
+  - QUICK_START.txt (5-min setup)
+  - TESTING_GUIDE.txt (all features)
+  - SYSTEM_OVERVIEW.js (technical)
+
+---
+
+TROUBLESHOOTING
+================
+
+Q: Server won't start
+A: Check if port 5000 is already in use
+   Or change port in server.js to 5001
+
+Q: Module not found
+A: Run: npm install
+
+Q: Can't connect to browser
+A: Make sure server is running
+   Check terminal for errors
+
+Q: Page shows 404
+A: Make sure you visit http://localhost:5000
+   (not https)
+
+---
+
+QUICK REFERENCE
+================
+
+Start server:         npm start
+Stop server:          CTRL + C
+Install packages:     npm install
+Update packages:      npm update
+List packages:        npm list
+
+---
+
+You're all set! 
+Start with: npm start
+
+Enjoy! 🐟
+>>>>>>> d95fc8aba83c39b73c2ce34485280b4798a34bfa

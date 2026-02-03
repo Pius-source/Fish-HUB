@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -791,3 +792,798 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Hub - Seller Dashboard</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .seller-container {
+            min-height: 100vh;
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+
+        .seller-header {
+            background: var(--ocean-blue);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .seller-header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .seller-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .seller-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: var(--ocean-blue);
+            border-bottom-color: var(--ocean-blue);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--ocean-blue);
+            box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--ocean-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--deep-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #ddd;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #ccc;
+        }
+
+        .btn-danger {
+            background: var(--coral);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d9573a;
+        }
+
+        .message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--ocean-blue), var(--deep-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--ocean-blue);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-stock {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .product-actions button {
+            flex: 1;
+            padding: 0.7rem;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--ocean-blue);
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-bar h2 {
+            margin: 0;
+        }
+
+        .nav-bar a {
+            color: var(--ocean-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-bar a:hover {
+            color: var(--deep-blue);
+        }
+
+        @media (max-width: 768px) {
+            .seller-container {
+                padding: 1rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-button {
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🐟 Fish Hub - Seller</div>
+            <ul class="nav-links">
+                <li><a href="index.html">← Back to Shop</a></li>
+                <li><a href="#" id="logoutLink" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="seller-container">
+        <div class="seller-header">
+            <h1>Seller Dashboard</h1>
+            <p id="sellerName">Welcome, Seller!</p>
+        </div>
+
+        <div class="seller-content">
+            <!-- Stats -->
+            <div id="statsContainer" class="stats" style="display: none;">
+                <div class="stat-card">
+                    <h3>Total Products</h3>
+                    <div class="value" id="totalProducts">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Stock</h3>
+                    <div class="value" id="totalStock">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Sales</h3>
+                    <div class="value" id="totalSales">$0</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('add-product')">Add Product</button>
+                <button class="tab-button" onclick="switchTab('my-products')">My Products</button>
+                <button class="tab-button" onclick="switchTab('orders')">Orders</button>
+            </div>
+
+            <!-- Tab: Add Product -->
+            <div id="add-product" class="tab-content active">
+                <div class="form-card">
+                    <h2>Add New Product</h2>
+                    <div id="addProductMessage" class="message"></div>
+
+                    <form id="addProductForm" onsubmit="addProduct(event)">
+                        <div class="form-group">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" required placeholder="e.g., Fresh Salmon">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <textarea id="productDescription" placeholder="Describe your product..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productCategory">Category *</label>
+                                <select id="productCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="fish">Fish</option>
+                                    <option value="shrimp">Shrimp</option>
+                                    <option value="crab">Crab</option>
+                                    <option value="lobster">Lobster</option>
+                                    <option value="oysters">Oysters</option>
+                                    <option value="mussels">Mussels</option>
+                                    <option value="squid">Squid</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productPrice">Price ($) *</label>
+                                <input type="number" id="productPrice" required min="0.01" step="0.01" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productStock">Stock Quantity *</label>
+                                <input type="number" id="productStock" required min="0" placeholder="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productOrigin">Origin/Location</label>
+                                <input type="text" id="productOrigin" placeholder="e.g., Atlantic Ocean">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productImage">Product Icon/Emoji</label>
+                            <input type="text" id="productImage" placeholder="e.g., 🐟 (optional)" maxlength="2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productImageUpload">Product Image (Optional)</label>
+                            <div class="image-upload-container" style="border: 2px dashed #007bff; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background-color: #f0f7ff; transition: all 0.3s ease;" id="imageDropZone">
+                                <input type="file" id="productImageUpload" accept="image/*" style="display: none;">
+                                <div id="imageUploadPrompt">
+                                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
+                                    <div style="color: #333; font-weight: 500;">Click to upload or drag and drop</div>
+                                    <div style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">PNG, JPG, GIF up to 5MB</div>
+                                </div>
+                                <div id="imagePreviewContainer" style="display: none; margin-top: 1rem;">
+                                    <img id="imagePreview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                                    <div style="margin-top: 0.5rem;">
+                                        <button type="button" class="btn btn-small" onclick="clearImageUpload()" style="background-color: #dc3545; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;">Remove Image</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="imageUploadError" class="message error" style="margin-top: 0.5rem; display: none;"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Add Product</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tab: My Products -->
+            <div id="my-products" class="tab-content">
+                <div style="margin-bottom: 1.5rem;">
+                    <h2>My Products</h2>
+                    <p id="productsCount" style="color: var(--text-light);">Loading products...</p>
+                </div>
+                <div id="productsContainer" class="products-grid"></div>
+            </div>
+
+            <!-- Tab: Orders -->
+            <div id="orders" class="tab-content">
+                <div class="form-card">
+                    <h2>Orders</h2>
+                    <div id="ordersContainer">
+                        <p style="color: var(--text-light);">Loading orders...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background-color: var(--deep-blue); color: white; padding: 2rem 0; text-align: center; margin-top: 4rem;">
+        <p>&copy; 2026 Fish Hub. All rights reserved. Committed to sustainable seafood and healthy communities.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">Created by Pius Ohene Darko</p>
+        <p style="margin-top: 0.2rem; font-size: 0.8rem; opacity: 0.6;">Trademark, Copyright, and Trade Secrets Protected</p>
+    </footer>
+
+    <script src="js/api-client.js"></script>
+    <script>
+        // Check if user is logged in and is a seller
+        function checkAuth() {
+            if (!auth.isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = auth.getUser();
+            if (user.role !== 'seller') {
+                alert('Access denied. Seller account required.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('sellerName').textContent = `Welcome, ${user.name}!`;
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load content for specific tabs
+            if (tabName === 'my-products') {
+                loadMyProducts();
+            } else if (tabName === 'orders') {
+                loadOrders();
+            }
+        }
+
+        // Add new product
+        let uploadedImageData = null;
+
+        function setupImageUpload() {
+            const dropZone = document.getElementById('imageDropZone');
+            const fileInput = document.getElementById('productImageUpload');
+
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.style.backgroundColor = '#e7f3ff';
+                dropZone.style.borderColor = '#0056b3';
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.style.backgroundColor = '#f0f7ff';
+                dropZone.style.borderColor = '#007bff';
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.style.backgroundColor = '#f0f7ff';
+                dropZone.style.borderColor = '#007bff';
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleImageSelect();
+                }
+            });
+
+            fileInput.addEventListener('change', handleImageSelect);
+        }
+
+        function handleImageSelect() {
+            const fileInput = document.getElementById('productImageUpload');
+            const file = fileInput.files[0];
+            const errorEl = document.getElementById('imageUploadError');
+            errorEl.style.display = 'none';
+
+            if (!file) return;
+
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                errorEl.textContent = '❌ File size must be less than 5MB';
+                errorEl.style.display = 'block';
+                fileInput.value = '';
+                uploadedImageData = null;
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                errorEl.textContent = '❌ Please upload a valid image file';
+                errorEl.style.display = 'block';
+                fileInput.value = '';
+                uploadedImageData = null;
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImageData = e.target.result;
+                document.getElementById('imageUploadPrompt').style.display = 'none';
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+                document.getElementById('imagePreview').src = uploadedImageData;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearImageUpload() {
+            document.getElementById('productImageUpload').value = '';
+            uploadedImageData = null;
+            document.getElementById('imageUploadPrompt').style.display = 'block';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('imageUploadError').style.display = 'none';
+        }
+
+        async function addProduct(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('productName').value.trim();
+            const description = document.getElementById('productDescription').value.trim();
+            const category = document.getElementById('productCategory').value;
+            const price = document.getElementById('productPrice').value;
+            const stock = document.getElementById('productStock').value;
+            const origin = document.getElementById('productOrigin').value.trim();
+            const image = document.getElementById('productImage').value.trim();
+
+            const messageEl = document.getElementById('addProductMessage');
+
+            try {
+                const result = await productManager.addProduct({
+                    name,
+                    description,
+                    category,
+                    price: parseFloat(price),
+                    stock: parseInt(stock),
+                    origin,
+                    image: image || '🐟',
+                    imageData: uploadedImageData
+                });
+
+                if (result.error) {
+                    // Session / Token issues -> force re-login
+                    if (result.error === 'Invalid token' || result.error === 'No token provided' || (typeof result.error === 'string' && result.error.toLowerCase().includes('jwt'))) {
+                        alert('Your session has expired. Please log in again.');
+                        auth.logout();
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    messageEl.className = 'message error';
+                    messageEl.textContent = '❌ ' + result.error;
+                } else {
+                    messageEl.className = 'message success';
+                    messageEl.textContent = '✅ Product added successfully!';
+                    
+                    // Reset form
+                    document.getElementById('addProductForm').reset();
+                    clearImageUpload();
+                    
+                    // Reload products
+                    setTimeout(() => {
+                        loadMyProducts();
+                    }, 1000);
+                }
+            } catch (err) {
+                messageEl.className = 'message error';
+                messageEl.textContent = '❌ Error: ' + err.message;
+            }
+        }
+
+        // Load seller's products
+        async function loadMyProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '<p style="color: var(--text-light);">Loading...</p>';
+
+            try {
+                const user = auth.getUser();
+                const result = await productManager.getSellerProducts(user.id);
+                const products = result.products || [];
+
+                if (products.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-light);">No products yet. Add your first product above!</p>';
+                    document.getElementById('productsCount').textContent = 'You have 0 products';
+                    return;
+                }
+
+                document.getElementById('productsCount').textContent = `You have ${products.length} product(s)`;
+
+                container.innerHTML = products.map(product => `
+                    <div class="product-card">
+                        <div class="product-image" style="${product.imageData ? 'background-size: cover; background-position: center; background-image: url(' + product.imageData + ');' : ''}">${!product.imageData ? (product.image || '🐟') : ''}</div>
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-price">$${product.price.toFixed(2)}</div>
+                            <div class="product-stock">Stock: ${product.stock} units</div>
+                            <div style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem;">
+                                Category: ${product.category}
+                                ${product.origin ? '<br>Origin: ' + product.origin : ''}
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-secondary" onclick="editProduct('${product.id}')">Edit</button>
+                                <button class="btn btn-danger" onclick="deleteProduct('${product.id}')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Update stats
+                const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
+                
+                let totalEarnings = 0;
+                if (result.seller && result.seller.totalEarnings !== undefined) {
+                    totalEarnings = result.seller.totalEarnings;
+                } else {
+                    totalEarnings = products.reduce((sum, p) => sum + (p.totalSold || 0) * p.price, 0);
+                }
+                
+                document.getElementById('statsContainer').style.display = 'grid';
+                document.getElementById('totalProducts').textContent = products.length;
+                document.getElementById('totalStock').textContent = totalStock;
+                document.getElementById('totalSales').textContent = '₦' + totalEarnings.toLocaleString();
+
+            } catch (err) {
+                container.innerHTML = '<p style="color: red;">Error loading products: ' + err.message + '</p>';
+            }
+        }
+
+        // Delete product
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                const result = await productManager.deleteProduct(productId);
+                if (result.error) {
+                    alert('Error: ' + result.error);
+                } else {
+                    alert('✅ Product deleted');
+                    loadMyProducts();
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+
+        // Edit product
+        function editProduct(productId) {
+            alert('Edit feature coming soon!');
+        }
+
+        // Load orders
+        async function loadOrders() {
+            const container = document.getElementById('ordersContainer');
+            container.innerHTML = '<p style="color: var(--text-light);">Loading orders...</p>';
+
+            try {
+                const result = await orderManager.getSellerOrders();
+                const orders = result.orders || [];
+
+                if (orders.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-light);">No orders yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #f0f0f0; border-bottom: 2px solid #ddd;">
+                                <th style="padding: 1rem; text-align: left;">Order ID</th>
+                                <th style="padding: 1rem; text-align: left;">Customer</th>
+                                <th style="padding: 1rem; text-align: left;">Total</th>
+                                <th style="padding: 1rem; text-align: left;">Status</th>
+                                <th style="padding: 1rem; text-align: left;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orders.map(order => `
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 1rem;">${order.id}</td>
+                                    <td style="padding: 1rem;">${order.customerName || 'N/A'}</td>
+                                    <td style="padding: 1rem;">$${order.total.toFixed(2)}</td>
+                                    <td style="padding: 1rem;">${order.status}</td>
+                                    <td style="padding: 1rem;">${new Date(order.createdAt).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (err) {
+                container.innerHTML = '<p style="color: red;">Error loading orders: ' + err.message + '</p>';
+            }
+        }
+
+        // Logout
+        function logout() {
+            auth.logout();
+            window.location.href = 'login.html';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            checkAuth();
+            loadMyProducts();
+            setupImageUpload();
+        });
+    </script>
+</body>
+</html>
+>>>>>>> d95fc8aba83c39b73c2ce34485280b4798a34bfa

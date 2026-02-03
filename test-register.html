@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,3 +74,80 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register API Test</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; }
+        button { padding: 10px 20px; font-size: 16px; }
+        pre { background: #f0f0f0; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Registration API Test</h1>
+    
+    <h3>Test Data:</h3>
+    <pre id="testData"></pre>
+    
+    <button onclick="testRegister()">Click to Test Register</button>
+    
+    <h3>Response:</h3>
+    <pre id="response">Waiting...</pre>
+    
+    <h3>Status:</h3>
+    <p id="status">Ready</p>
+
+    <script>
+        const testData = {
+            email: 'testuser' + Date.now() + '@email.com',
+            password: 'password123',
+            name: 'Test User',
+            phone: '0123456789',
+            role: 'buyer'
+        };
+
+        document.getElementById('testData').textContent = JSON.stringify(testData, null, 2);
+
+        async function testRegister() {
+            const status = document.getElementById('status');
+            const response = document.getElementById('response');
+            
+            status.textContent = 'Sending request...';
+            response.textContent = 'Processing...';
+
+            try {
+                const url = 'http://localhost:5000/api/auth/register';
+                console.log('📨 Sending to:', url);
+                console.log('📦 Data:', testData);
+
+                const result = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+
+                console.log('📊 Response status:', result.status);
+                const data = await result.json();
+                console.log('📄 Response data:', data);
+
+                if (result.ok) {
+                    response.innerHTML = '<span class="success">✅ SUCCESS!</span>\n' + JSON.stringify(data, null, 2);
+                    status.innerHTML = '<span class="success">✅ Registration worked! Token: ' + data.token.substring(0, 20) + '...</span>';
+                } else {
+                    response.innerHTML = '<span class="error">❌ ERROR</span>\n' + JSON.stringify(data, null, 2);
+                    status.innerHTML = '<span class="error">❌ Error: ' + data.error + '</span>';
+                }
+            } catch (err) {
+                console.error('❌ Exception:', err);
+                response.innerHTML = '<span class="error">❌ EXCEPTION\n' + err.message + '\n' + err.stack + '</span>';
+                status.innerHTML = '<span class="error">❌ Exception: ' + err.message + '</span>';
+            }
+        }
+    </script>
+</body>
+</html>
+>>>>>>> d95fc8aba83c39b73c2ce34485280b4798a34bfa

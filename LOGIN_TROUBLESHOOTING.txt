@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 🐛 LOGIN TROUBLESHOOTING GUIDE
 ================================
 
@@ -169,3 +170,176 @@ Contact support if:
   - Server won't start
   - Can't install dependencies
   - Still getting errors after this guide
+=======
+🐛 LOGIN TROUBLESHOOTING GUIDE
+================================
+
+If login isn't working, follow these steps:
+
+STEP 1: Check Server is Running
+================================
+In your terminal, you should see:
+  ✅ "🐟 Fish Hub Server running on http://localhost:5000"
+  ✅ "📊 API available at http://localhost:5000/api"
+
+If you don't see this:
+  1. Run: npm start
+  2. Wait 3 seconds for server to fully start
+  3. Then refresh the login page
+
+STEP 2: Check Browser Console for Errors
+===========================================
+1. Open login page: http://localhost:5000/login.html
+2. Press F12 to open Developer Tools
+3. Click "Console" tab
+4. Refresh the page (F5)
+5. Look for any RED error messages
+
+Common errors:
+  ❌ "Cannot find api-client.js" 
+     → Check that js/api-client.js file exists
+
+  ❌ "Cannot reach http://localhost:5000/api"
+     → Server not running, do npm start
+
+  ❌ Network error in Console
+     → Server crashed, restart with npm start
+
+STEP 3: Test Login Credentials
+================================
+You can use ANY email/password to test:
+
+Option A: Register first, then login
+  1. Click "Register" link
+  2. Fill in: Email, Password, Name, Phone
+  3. Click "Register"
+  4. Should redirect to home page
+
+Option B: Create test account via Terminal
+  Skip to STEP 4 below
+
+STEP 4: Verify API is Working
+===============================
+1. Open new Terminal tab (keep server running)
+2. Try this command:
+
+  curl -X POST http://localhost:5000/api/auth/register \
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@email.com","password":"password123","name":"Test User","phone":"0123456789","role":"buyer"}'
+
+  You should see a response like:
+  {
+    "message": "User registered successfully",
+    "user": {...},
+    "token": "eyJhbGc..."
+  }
+
+  If this works, the API is good ✅
+
+STEP 5: Full Login Test
+========================
+1. Register account (from STEP 3)
+2. Go to login page
+3. Enter email and password you just created
+4. Click "Login"
+5. Should see "Loading..." then redirect to home page
+
+If it doesn't work, check the error message that appears.
+
+STEP 6: Check Data Files Created
+==================================
+The server creates data files automatically:
+
+Look for /data folder with these files:
+  ✅ users.json
+  ✅ products.json
+  ✅ orders.json
+  ✅ sellers.json
+  ✅ reviews.json
+  ✅ cart.json
+  ✅ categories.json
+
+If /data folder doesn't exist:
+  → Server doesn't have write permissions
+  → Try running from a different folder
+  → Or check file permissions
+
+COMMON ISSUES & FIXES
+=======================
+
+ISSUE: "Email already exists"
+  FIX: Register with a different email
+       Or check users.json to see what's registered
+       Or delete users.json and restart server
+
+ISSUE: "Invalid email or password"
+  FIX: Make sure you typed it correctly
+       Check caps lock is off
+       Try registering a new account
+
+ISSUE: Form won't submit
+  FIX: Check browser console for errors (F12)
+       Make sure server is running
+       Check email field is filled in
+
+ISSUE: Page goes white/blank after login
+  FIX: Clear browser cache (Ctrl+Shift+Delete)
+       Refresh page (F5)
+       Close browser and reopen
+
+ISSUE: Server keeps crashing
+  FIX: Check port 5000 is not in use
+       Try: npm start -- --port 5001
+       Check Node.js version (needs v14+)
+
+DEBUGGING TIPS
+==============
+
+1. Open browser console (F12 → Console)
+2. Log in and watch for errors
+3. Copy error message and search it
+4. Check server terminal for logs
+5. Try in a different browser
+6. Clear browser cache and cookies
+
+TESTING API DIRECTLY
+====================
+
+Test registration via curl:
+  curl -X POST http://localhost:5000/api/auth/register \
+    -H "Content-Type: application/json" \
+    -d '{"email":"new@test.com","password":"test123","name":"Test","phone":"0123456789"}'
+
+Test login via curl:
+  curl -X POST http://localhost:5000/api/auth/login \
+    -H "Content-Type: application/json" \
+    -d '{"email":"new@test.com","password":"test123"}'
+
+You should get back a token and user info.
+
+STILL NOT WORKING?
+==================
+
+1. Delete /data folder
+2. Restart server: npm start
+3. Try registering a NEW account
+4. Try logging in with that account
+5. Check browser console for error details
+6. Copy the error and search online
+
+If you see in console:
+  "Cannot find module..." → npm install
+  "EADDRINUSE" → port 5000 in use
+  "ENOENT" → missing file
+
+Most Common Fix:
+  npm install
+  npm start
+  Refresh browser
+  Try again
+
+Contact support if:
+  - Server won't start
+  - Can't install dependencies
+  - Still getting errors after this guide
+>>>>>>> d95fc8aba83c39b73c2ce34485280b4798a34bfa
