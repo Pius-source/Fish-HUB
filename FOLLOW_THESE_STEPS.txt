@@ -1,0 +1,243 @@
+✅ ENHANCED DEBUGGING - FOLLOW THESE EXACT STEPS
+===============================================
+
+I've added detailed logging to the login system. Follow these steps to identify the issue:
+
+STEP 1: START FRESH
+===================
+1. Open Terminal where server is running
+2. Press Ctrl+C to stop it
+3. Wait 2 seconds
+4. Run: npm start
+5. Wait for: "🐟 Fish Hub Server running on http://localhost:5000"
+
+STEP 2: OPEN LOGIN PAGE WITH CONSOLE
+====================================
+1. Open new browser tab: http://localhost:5000/login.html
+2. Press F12 to open DevTools
+3. Go to Console tab
+4. You should immediately see 3-5 blue messages
+
+STEP 3: CHECK INITIAL MESSAGES
+==============================
+You should see in the Console:
+  ✅ 🌐 API Base URL: http://localhost:5000/api
+  ✅ 🔐 Login handler script loaded
+  ✅ 🔐 DOM loaded, initializing login form...
+  ✅ ✅ AuthManager initialized
+  ✅ 🔄 Initializing toggle listener...
+  ✅ 🔄 Attaching toggle listener, element found: true
+
+If any of these are MISSING or show ❌ errors:
+  → STOP HERE and try these fixes:
+    1. Close browser tab completely
+    2. Restart server (Ctrl+C, npm start)
+    3. Open login page in new tab
+    4. If still doesn't work, check if files exist:
+       - js/api-client.js
+       - js/login-handler.js
+       - Check browser Network tab for 404 errors
+
+STEP 4: CLEAR THE FORM & TRY REGISTER
+=====================================
+1. In the login page form:
+   - Email: test@email.com (any valid email)
+   - Password: password123
+   - Click "Register" link
+2. Fill in Register form:
+   - Name: Test User
+   - Phone: 0123456789
+   - Role: buyer
+   - Click "Register" button
+
+STEP 5: WATCH THE CONSOLE DURING REGISTER
+==========================================
+You should see messages in this order:
+  📝 Form submitted, mode: REGISTER
+  📧 Email: test@...
+  🔑 Password: 11 chars
+  📋 Calling auth.register()...
+  
+Then shortly after:
+  📨 Sending register request to: http://localhost:5000/api/auth/register
+  Payload: { email: 'test@email.com', name: 'Test User', phone: '0123456789', role: 'buyer', password: '***' }
+  Response status: 201
+  Response ok: true
+  Response data: { message: '...', token: 'eyJhbGc...', user: { id: '...', ... } }
+  ✅ Register successful, token stored
+  ✅ Auth successful! Redirecting to home page...
+
+If registration works:
+  ✅ Page redirects to index.html
+  ✅ You're now logged in!
+
+STEP 6: TEST LOGIN (If you don't see redirect)
+==============================================
+1. If no redirect after register, manually go to: http://localhost:5000/login.html
+2. Clear the form fields completely
+3. Enter the credentials from step 4:
+   - Email: test@email.com
+   - Password: password123
+4. Make sure "Login" mode is selected (not "Register")
+5. Click "Login" button
+
+STEP 7: WATCH CONSOLE DURING LOGIN
+===================================
+You should see:
+  📝 Form submitted, mode: LOGIN
+  📧 Email: test@...
+  🔑 Password: 11 chars
+  🔐 Calling auth.login()...
+  
+Then shortly after:
+  📧 Sending login request to: http://localhost:5000/api/auth/login
+  Payload: { email: 'test@email.com', password: '***' }
+  Response status: 200
+  Response ok: true
+  Response data: { token: 'eyJhbGc...', user: { id: '...', email: 'test@email.com', ... } }
+  ✅ Login successful, token stored
+  ✅ Auth successful! Redirecting to home page...
+
+If this happens:
+  ✅ LOGIN WORKS! The system is functioning correctly
+
+STEP 8: IDENTIFY THE PROBLEM
+=============================
+Compare your console output with Step 5 or 7. 
+
+Scenarios:
+
+SCENARIO A: Nothing appears in console
+  Problem: JavaScript isn't running
+  Fix:
+    1. Refresh page (F5)
+    2. Check for JavaScript errors (red messages in console)
+    3. Try incognito mode
+    4. Try different browser
+
+SCENARIO B: ✅ Messages appear but Response status: 404
+  Problem: Server routes not found
+  Fix:
+    1. Server might be crashed
+    2. Run: npm install
+    3. Restart: npm start
+    4. Check if /api/auth/routes exist
+    5. Look in server terminal for errors
+
+SCENARIO C: Response status: 400, Response data: { error: '...' }
+  Problem: API rejected the request
+  Common errors:
+    - "Email already exists" → Try different email
+    - "Invalid email format" → Use valid email (with @)
+    - "User not found" → Wrong email/password for login
+    - "Password too short" → Use longer password (8+ chars)
+
+SCENARIO D: ❌ Login exception: TypeError: fetch failed
+  Problem: Can't reach server
+  Fix:
+    1. Make sure server is running (npm start)
+    2. Check server terminal for errors
+    3. Try: curl http://localhost:5000/api/health
+    4. If curl fails, server needs restart
+
+SCENARIO E: Redirects to index.html but not logged in
+  Problem: Login worked but page thinks you're not logged in
+  Fix:
+    1. Check localStorage has token
+    2. Run in Console:
+       localStorage.getItem('token')
+       localStorage.getItem('user')
+    3. Should show long token string and user object
+    4. If empty, tokens aren't being saved
+    5. Check browser Privacy settings allow localStorage
+
+STEP 9: MANUAL API TEST (If UI doesn't work)
+============================================
+If the JavaScript approach fails, test the API directly.
+
+Open new Terminal and run:
+
+TEST 1 - Check server:
+  curl http://localhost:5000/api/health
+  
+Expected output: {"status":"ok"}
+
+If this fails:
+  - Server not running
+  - Run: npm start
+  - Wait 3 seconds
+  - Try curl again
+
+TEST 2 - Register:
+  curl -X POST http://localhost:5000/api/auth/register \
+    -H "Content-Type: application/json" \
+    -d "{\"email\":\"curl@test.com\",\"password\":\"password123\",\"name\":\"Curl Test\",\"phone\":\"0123456789\",\"role\":\"buyer\"}"
+
+Expected output:
+  {"message":"User registered successfully","token":"eyJhbGc...","user":{"id":"...","email":"curl@test.com",...}}
+
+If this works → API is fine, issue is in browser JavaScript
+If this fails → API has problem, restart server
+
+TEST 3 - Login:
+  curl -X POST http://localhost:5000/api/auth/login \
+    -H "Content-Type: application/json" \
+    -d "{\"email\":\"curl@test.com\",\"password\":\"password123\"}"
+
+Expected output: Same as TEST 2
+
+If this works → API is definitely fine
+If this fails → Wrong credentials
+
+STEP 10: REPORT THE ERROR
+==========================
+When something breaks, tell me:
+
+1. What console messages you saw (copy & paste)
+2. What Response status you got (if any)
+3. What Response data showed (if any error message)
+4. Whether toggle button worked
+5. Whether curl tests worked
+6. What you expected vs what happened
+
+QUICK CHECKLIST
+===============
+□ Server running (npm start)
+□ Login page opened
+□ Browser Console open (F12)
+□ Page shows initial log messages
+□ Filled form with valid email/password
+□ Clicked Register or Login
+□ Watched console for error messages
+□ Got either success redirect OR specific error
+□ Shared the exact console output
+
+COMMON COPY-PASTE COMMANDS
+==========================
+
+To see console logs, in browser console type:
+  // Check if scripts loaded
+  console.log('Auth:', typeof auth);
+  console.log('API URL:', window.API_BASE_URL);
+  
+  // Check if user is logged in
+  localStorage.getItem('token');
+  localStorage.getItem('user');
+  
+  // Test login directly
+  auth.login('test@email.com', 'password123')
+    .then(r => console.log('SUCCESS:', r))
+    .catch(e => console.error('ERROR:', e))
+
+To reset everything:
+  localStorage.clear();
+  location.reload();
+
+To check server:
+  curl http://localhost:5000/api/health
+  
+  If you get "curl: (7) Failed to connect":
+    → Server not running
+    → npm start in terminal
+
+✅ FOLLOW THESE STEPS EXACTLY AND YOU'LL FIND THE ISSUE!

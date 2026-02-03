@@ -1,0 +1,201 @@
+🔍 DEBUGGING LOGIN ISSUES - QUICK START
+========================================
+
+The login page has been enhanced with console logging to help debug issues.
+
+STEP 1: Open Browser Console
+=============================
+1. Go to http://localhost:5000/login.html
+2. Press F12 to open Developer Tools
+3. Click the "Console" tab
+4. You should see blue messages starting with 🔐, 🔄, etc.
+
+STEP 2: Check Initial Logs
+============================
+When the page loads, you should see:
+  ✅ "🔐 Login handler script loaded"
+  ✅ "🔐 DOM loaded, initializing login form..."
+  ✅ "✅ AuthManager loaded successfully"
+  ✅ "🔄 Initializing toggle listener..."
+  ✅ "🔄 Attaching toggle listener, element found: true"
+
+If you see any ❌ errors instead, the scripts aren't loading properly.
+
+STEP 3: Test Toggle Button
+============================
+1. In the login page, click "Register" link
+2. Check console for:
+   ✅ "🔄 Toggle clicked! Switching mode..."
+   ✅ "🔄 Switched to REGISTER mode"
+   ✅ "🔄 Attaching toggle listener..."
+
+If toggle doesn't work, you'll see no console messages.
+
+STEP 4: Test Login Submit
+==========================
+1. Enter email: test@test.com
+2. Enter password: test123
+3. Click "Login" button
+4. Check console for:
+   ✅ "📝 Form submitted, mode: LOGIN"
+   ✅ "📧 Email: test@..."
+   ✅ "🔑 Password: 8 chars"
+   ✅ "🔐 Calling auth.login()..."
+
+STEP 5: Check API Response
+===========================
+After step 4, you should see one of:
+
+SUCCESS:
+  ✅ "✅ Auth successful! Redirecting to home page..."
+  → Page redirects to index.html
+
+FAILURE:
+  ❌ "❌ Auth failed: [error message]"
+  Possible errors:
+    - "Invalid email or password"
+    - "Email not found"
+    - "User not found"
+
+API ERROR:
+  ❌ "❌ Exception during auth: TypeError: fetch failed"
+  → Server not running or wrong URL
+
+STEP 6: Check Network Tab
+==========================
+1. Open DevTools, click "Network" tab
+2. Refresh page
+3. Try to login
+4. Look for "login" request in the list
+5. Click on it and check:
+   - URL should be: http://localhost:5000/api/auth/login
+   - Method should be: POST
+   - Status should be: 200 (success) or 400/500 (error)
+   - Response should show user and token
+
+If no "login" request appears, form submission failed.
+
+COMMON ISSUES & SOLUTIONS
+==========================
+
+ISSUE 1: "❌ AuthManager not found"
+  CAUSE: api-client.js didn't load
+  SOLUTION:
+    1. Check file exists: js/api-client.js
+    2. Refresh browser (Ctrl+F5)
+    3. Check browser console for 404 errors
+    4. Try in a new incognito window
+
+ISSUE 2: No console logs at all
+  CAUSE: login-handler.js didn't load
+  SOLUTION:
+    1. Check js/login-handler.js exists
+    2. Refresh browser (Ctrl+F5)
+    3. Check Network tab for failed requests
+    4. Check file permissions
+
+ISSUE 3: "🔐 Calling auth.login()..." but no response
+  CAUSE: API request hangs/times out
+  SOLUTION:
+    1. Check server is running (npm start)
+    2. Check Network tab → Request URL
+    3. Try: curl http://localhost:5000/api/health
+    4. Restart server: Ctrl+C, then npm start
+
+ISSUE 4: "Invalid email or password"
+  CAUSE: Account doesn't exist OR wrong password
+  SOLUTION:
+    1. Try registering NEW account first
+    2. Use same email/password for login
+    3. Check data/users.json file exists
+    4. Check console logs during registration
+
+ISSUE 5: "❌ Exception during auth: TypeError: fetch failed"
+  CAUSE: Server not running or CORS error
+  SOLUTION:
+    1. Make sure server is running (npm start)
+    2. Check URL in console matches: http://localhost:5000
+    3. Server must be running BEFORE opening login page
+    4. Try: curl http://localhost:5000/api/health
+
+TESTING API DIRECTLY
+====================
+
+If UI doesn't work, test API directly with curl:
+
+Test 1 - Check server is running:
+  curl http://localhost:5000/api/health
+  Expected: {"status":"ok"}
+
+Test 2 - Register account:
+  curl -X POST http://localhost:5000/api/auth/register \
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@test.com","password":"test123","name":"Test","phone":"0123456789"}'
+  Expected: {"message":"...","token":"...","user":{...}}
+
+Test 3 - Login with that account:
+  curl -X POST http://localhost:5000/api/auth/login \
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@test.com","password":"test123"}'
+  Expected: Same response as Test 2
+
+If curl tests work but UI doesn't:
+  → Issue is in JavaScript/HTML
+  → Check browser console for errors
+
+If curl tests fail:
+  → Issue is in server/API
+  → Restart: Ctrl+C in server terminal
+  → Run: npm start
+  → Reinstall if needed: npm install
+
+STEP-BY-STEP COMPLETE FIX
+=========================
+
+1. Stop server: Ctrl+C in terminal
+2. Delete data folder: rm -r data
+3. Restart server: npm start
+4. Open browser: http://localhost:5000/login.html
+5. Check console for initial logs
+6. Try to register NEW account
+7. Check console for register logs
+8. Click "Login" link to switch mode
+9. Login with same credentials
+10. Check console output
+11. Look in Network tab if it fails
+
+COPY & PASTE TEST STEPS
+=======================
+
+1. Open login page, press F12
+2. Paste this in console:
+   console.log('API URL:', 'http://localhost:5000/api');
+   console.log('Auth exists:', typeof auth);
+   console.log('AuthManager:', auth);
+
+3. Should see your AuthManager details
+
+4. Try login in form and watch console
+
+ADVANCED DEBUGGING
+==================
+
+In browser console, try:
+  auth.login('test@test.com', 'test123')
+    .then(r => console.log('Result:', r))
+    .catch(e => console.error('Error:', e))
+
+This tests the API directly without the form.
+
+STILL BROKEN?
+=============
+
+1. Share the console error messages
+2. Share Network tab details (status code, response)
+3. Check server terminal for errors
+4. Try: npm install, npm start
+5. Delete data folder and start fresh
+6. Try in incognito/private browser mode
+7. Try in different browser (Chrome, Firefox, Edge)
+
+✅ Good luck! The logs will help identify exactly where it's breaking.

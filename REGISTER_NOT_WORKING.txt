@@ -1,0 +1,214 @@
+🔧 REGISTRATION NOT WORKING - DEBUG STEPS
+=========================================
+
+The issue is likely one of these:
+1. Server not running
+2. Form validation failing
+3. API not responding
+4. Browser console errors
+
+FOLLOW THESE EXACT STEPS:
+
+STEP 1: VERIFY SERVER IS RUNNING
+=================================
+In Terminal where npm start is running, you should see:
+  🐟 Fish Hub Server running on http://localhost:5000
+  📊 API available at http://localhost:5000/api
+
+If NOT, run:
+  npm install
+  npm start
+
+STEP 2: OPEN LOGIN PAGE & CONSOLE
+==================================
+1. Open: http://localhost:5000/login.html
+2. Press F12 (open browser console)
+3. Look for blue messages at the top
+
+You should see:
+  🌐 API Base URL: http://localhost:5000/api
+  🔐 Login handler script loaded
+  ✅ AuthManager initialized
+
+STEP 3: FILL & SUBMIT REGISTER FORM
+====================================
+1. Click "Register" link (to switch to register mode)
+2. Fill in:
+   - Full Name: Test User
+   - Email: test123@email.com
+   - Password: password123
+   - Phone: 0123456789
+   - Account Type: Buyer
+3. Click "Register" button
+4. WATCH THE CONSOLE for messages
+
+EXPECTED CONSOLE MESSAGES (in order):
+=====================================
+📝 Form submitted, mode: REGISTER
+📋 Calling auth.register()...
+   Name: Test User
+   Email: test123@email.com
+   Phone: 0123456789
+   Role: buyer
+   Password length: 11
+
+📨 Sending register request to: http://localhost:5000/api/auth/register
+   Payload: {email: "test123@email.com", name: "Test User", phone: "0123456789", role: "buyer", password: "***"}
+
+Then wait 1-2 seconds, should see:
+
+   Response status: 201
+   Response ok: true
+   Response data: {message: "User registered successfully", token: "eyJ...", user: {...}}
+
+✅ Register successful, token stored
+✅ Auth successful! Redirecting to home page...
+
+Then: PAGE SHOULD REDIRECT TO HOME PAGE
+
+STEP 4: IF IT STOPS AT "Form submitted"
+========================================
+The form submitted but nothing after that means:
+- API request not being made
+- Check console for red error messages
+- Check if any validation failed
+
+Look for errors like:
+  ❌ Password must be at least 6 characters
+  ❌ Name is required
+
+STEP 5: IF IT STOPS AT "Sending register request"
+==================================================
+The form works but API doesn't respond, means:
+- Server not running
+- Server URL wrong
+- Network issue
+
+Try in console:
+  fetch('http://localhost:5000/api/health')
+    .then(r => r.json())
+    .then(d => console.log(d))
+
+You should see: {status: "ok"}
+
+If error, server isn't running. Do: npm start
+
+STEP 6: IF YOU SEE "Response status: 400"
+===========================================
+This means server rejected the request. Check the error:
+
+Look for:
+  ❌ "Email already exists" 
+    → Use different email address
+  
+  ❌ "Email, password, and name are required"
+    → Make sure all fields filled
+  
+  ❌ Other error
+    → Read the exact error message
+
+STEP 7: COPY YOUR CONSOLE OUTPUT
+=================================
+If still not working:
+1. Select all console text (Ctrl+A in console)
+2. Copy it (Ctrl+C)
+3. Share it here
+
+That will show me exactly where it's failing.
+
+QUICK CHECKLIST
+===============
+
+Before trying again:
+☐ npm install (done earlier, don't need again)
+☐ npm start (server should be running)
+☐ Wait 2 seconds for server to start
+☐ Open: http://localhost:5000/login.html
+☐ Press F12 to open console
+☐ See blue messages in console
+☐ Fill all form fields
+☐ Use password 6+ characters
+☐ Click Register
+☐ Watch console output
+☐ Wait 2-3 seconds for response
+☐ Check for error message
+
+WHAT EACH PART DOES
+===================
+
+Form fields:
+  - Full Name: Required, any text
+  - Email: Required, must have @ and .
+  - Password: Required, minimum 6 characters
+  - Phone: Optional, any numbers
+  - Account Type: Buyer or Seller
+
+Validation happens in this order:
+  1. Check email not empty
+  2. Check password not empty
+  3. Check name not empty
+  4. Check password >= 6 characters
+  5. Send to API
+  6. Wait for response
+  7. Check if email already registered
+  8. Create account
+  9. Return token
+  10. Redirect to home
+
+If any step fails, you get error message.
+
+TESTING API DIRECTLY
+====================
+
+If you want to test without the form, open console and run:
+
+auth.register('test@test.com', 'password123', 'Test User', '0123456789', 'buyer')
+  .then(r => {
+    console.log('Result:', r);
+    if (r.success) {
+      console.log('✅ Registration worked!');
+      console.log('User:', r.data.user);
+      console.log('Token:', r.data.token);
+    } else {
+      console.log('❌ Registration failed:', r.error);
+    }
+  })
+
+This will show if the registration API works independent of the form.
+
+MOST COMMON ISSUES
+==================
+
+Issue: "Form submitted" but nothing after
+  Fix: Check password is 6+ characters
+       Check all fields are filled
+       Check for red error messages
+
+Issue: "Sending request" but no response
+  Fix: Server not running
+       Run: npm start
+       Restart browser
+
+Issue: "Response status: 400"
+  Fix: Read error message
+       Usually "Email already exists"
+       Try different email
+
+Issue: "Page doesn't redirect"
+  Fix: Check for error message
+       Check console for ❌
+       Share console output
+
+FINAL STEPS
+===========
+
+1. Kill any running npm start (Ctrl+C)
+2. Run: npm install (fresh install)
+3. Run: npm start
+4. Wait for server message
+5. Open: http://localhost:5000/login.html
+6. Open console: F12
+7. Try registration
+8. Share console output if it fails
+
+Let me know what console messages you see! 🔍
