@@ -290,11 +290,16 @@ class ProductManager {
 
   async addProduct(product) {
     try {
+      const token = auth.getToken();
+      if (!token) {
+        return { error: 'No token provided' };
+      }
+
       const response = await fetch(`${API_BASE_URL}/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth.getToken()}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(product)
       });

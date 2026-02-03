@@ -625,6 +625,14 @@
                 });
 
                 if (result.error) {
+                    // Session / Token issues -> force re-login
+                    if (result.error === 'Invalid token' || result.error === 'No token provided' || (typeof result.error === 'string' && result.error.toLowerCase().includes('jwt'))) {
+                        alert('Your session has expired. Please log in again.');
+                        auth.logout();
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
                     messageEl.className = 'message error';
                     messageEl.textContent = '❌ ' + result.error;
                 } else {

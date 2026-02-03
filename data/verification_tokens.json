@@ -70,5 +70,23 @@
     "used": false,
     "createdAt": "2026-02-02T03:17:58.137Z",
     "expiresAt": "2026-02-03T03:17:58.137Z"
+  },
+  {
+    "id": "0981a565-a033-4e4c-a3f1-49470017c265",
+    "email": "fishhub.edu.ucc.gh@gmail.com",
+    "userId": "87c69593-c437-43f1-b7cf-61593fcaf39d",
+    "code": "M28BM3",
+    "used": false,
+    "createdAt": "2026-02-02T11:57:10.948Z",
+    "expiresAt": "2026-02-03T11:57:10.948Z"
+  },
+  {
+    "id": "11586502-869e-45c1-8028-d40fe8d94fa2",
+    "email": "kobby@gmail.com",
+    "userId": "62f6d893-cd77-4712-89ef-badb5e5832d4",
+    "code": "G79B5B",
+    "used": false,
+    "createdAt": "2026-02-02T12:45:36.009Z",
+    "expiresAt": "2026-02-03T12:45:36.009Z"
   }
 ]

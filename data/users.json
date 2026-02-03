@@ -190,5 +190,29 @@
     "createdAt": "2026-02-02T03:17:58.136Z",
     "status": "pending_verification",
     "emailVerified": false
+  },
+  {
+    "id": "87c69593-c437-43f1-b7cf-61593fcaf39d",
+    "email": "fishhub.edu.ucc.gh@gmail.com",
+    "password": "$2a$10$jZYCIoavpLW.8erUwy3CxuqXUdYM2OrF0BqCLgb75CjTJIQDWHUr.",
+    "name": "maxwell",
+    "phone": "0545748561",
+    "role": "seller",
+    "addresses": [],
+    "createdAt": "2026-02-02T11:57:10.946Z",
+    "status": "active",
+    "emailVerified": true
+  },
+  {
+    "id": "62f6d893-cd77-4712-89ef-badb5e5832d4",
+    "email": "kobby@gmail.com",
+    "password": "$2a$10$8nudXmsbSU7FOYgPCz86Cu71QN9hdc3.YVLNN2YHQdtUSq..jieSW",
+    "name": "kobby",
+    "phone": "0551663153",
+    "role": "buyer",
+    "addresses": [],
+    "createdAt": "2026-02-02T12:45:36.008Z",
+    "status": "active",
+    "emailVerified": true
   }
 ]
